@@ -1,0 +1,14 @@
+{% extends "layout.email.server.view.html" %}
+
+{% block content %}
+
+<p>
+    {{text}}
+</p>
+<div>{{"EMAIL_COUNTRY"|translate}}: {{country}}</div>
+<div>{{"EMAIL_REFERER"|translate}}:
+    <a style="text-decoration: underline" href="{{referer}}">{{referer}}</a>
+</div>
+<div>{{"EMAIL_IP"|translate}}: {{ip}}</div>
+
+{% endblock %}

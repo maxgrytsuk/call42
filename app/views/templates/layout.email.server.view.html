@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<br>
+<div>
+    -----------------------<br>
+    <span>{{"EMAIL_FOOTER_TEXT"|translate}}</span><br>
+    <span>{{widgetServerHost}}</span><br>
+</div>
+</body>
+</html>

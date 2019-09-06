@@ -1,0 +1,245 @@
+<section class="app-section" data-ng-controller="SettingsController">
+
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><span translate>VIEW_PROFILE_TITLE</span></h1>
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+
+            <div class="panel-body b-b b-light">
+
+                <div class="wrapper-md">
+
+                    <h4 translate>VIEW_PROFILE_ACCOUNT</h4>
+
+                    <div style="clear: both"></div>
+
+                    <div class="panel panel-default" style="margin-bottom: 10px">
+
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td style="width:350px">
+                                    <span translate>VIEW_USERNAME</span>
+                                </td>
+                                <td>
+                                    <span>{{user.username}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span>Email</span>
+                                </td>
+                                <td>
+                                    <span>{{user.email}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>VIEW_EDIT_PROFILE_TIMEZONE</span>
+                                </td>
+                                <td>
+                                    <span>{{user.timezone}}</span>
+                                </td>
+                            </tr>
+                            <tr data-ng-show="user.provider !== 'local'">
+                                <td>
+                                    <span translate>VIEW_EDIT_PROFILE_PROVIDER</span>
+                                </td>
+                                <td>
+                                    <span>{{user.provider}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <div style="margin-bottom: 30px">
+                        <a class="btn btn-sm btn-light btn-default link padder-md"
+                           ng-click="editProfile()" translate>
+                            VIEW_PROFILE_EDIT_BUTTON
+                        </a>
+
+                        <a class="btn btn-sm btn-light btn-default link padder-md"
+                           ng-click="changePassword()" translate>
+                            VIEW_HEADER_CHANGE_PASSWORD
+                        </a>
+                    </div>
+
+
+                    <h4 translate>VIEW_PROFILE_BILLING_INFO</h4>
+
+                    <div class="panel panel-default" style="margin-bottom: 10px">
+
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <span translate>VIEW_BILLING_NOTIFICATIONS_AMOUNT</span>
+                                </td>
+                                <td>
+                                    <div>{{user.notifications}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>VIEW_BILLING_NOTIFICATIONS_MAX</span>
+                                </td>
+                                <td>
+                                    <div>{{user.notifications_max}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:350px">
+                                    <span translate>VIEW_BILLING_MONEY_AMOUNT</span>
+                                </td>
+                                <td>
+                                    <div ng-bind-html="formatMoney(user.money, user.currency.name)"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div style="margin-bottom: 30px">
+                        <a class="btn btn-sm btn-light btn-default link padder-md"
+                           ui-sref="app.payment" translate>
+                            VIEW_BILLING_PAYMENT_BUTTON
+                        </a>
+                        <a class="btn btn-sm btn-light btn-default link padder-md"
+                           ui-sref="app.standardPrices" translate>
+                            VIEW_BILLING_STANDARD_PRICES_BUTTON
+                        </a>
+                    </div>
+
+                    <balance user-id="user._id" currency="user.currency.name"></balance>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<script type="text/ng-template" id="editProfile.html">
+    <div class="modal-header">
+        <h3 class="modal-title"><span translate>VIEW_EDIT_PROFILE_TITLE</span></h3>
+    </div>
+    <div class="modal-body">
+        <div class="panel panel-default">
+            <div data-ng-show="user.provider !== 'local'" style="padding: 10px"><span translate>VIEW_EDIT_PROFILE_PROVIDER</span>:<b style="padding-left: 5px;">{{user.provider}}</b></div>
+            <div class="panel-body b-b b-light">
+                <form name="userForm">
+                    <fieldset>
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid}">
+                            <label for="email" translate>VIEW_EDIT_PROFILE_EMAIL</label>
+                            <input type="email"
+                                   id="email"
+                                   name="email"
+                                   class="form-control"
+                                   data-ng-model="user.email"
+                                   placeholder="{{'VIEW_EDIT_PROFILE_EMAIL_PLACEHOLDER'|translate}}" required>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid}">
+                            <label for="username" translate>VIEW_USERNAME</label>
+                            <input type="text"
+                                   id="username"
+                                   name="username"
+                                   class="form-control"
+                                   data-ng-model="user.username"
+                                   placeholder="{{'VIEW_USERNAME'|translate}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="timezone" translate>VIEW_EDIT_PROFILE_TIMEZONE</label>
+                            <select class="form-control m-b" id="timezone" data-ng-model="user.timezone">
+                                <option ng-repeat="item in timezones">{{item}}</option>
+                            </select>
+                        </div>
+                        <div data-ng-show="success" class="text-success">
+                            <div translate>VIEW_EDIT_PROFILE_SAVE_SUCCESS</div>
+                        </div>
+                        <div data-ng-show="error" class="text-danger">
+                            <div data-ng-bind="error"></div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <!--</div>-->
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-click="save(userForm.$valid)" translate>VIEW_BUTTON_SAVE</button>
+        <button class="btn btn-default btn-light" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+    </div>
+</script>
+<script type="text/ng-template" id="changePassword.html">
+    <section class="app-section" data-ng-controller="SettingsController">
+
+        <div class="bg-light lter b-b wrapper-md">
+            <h1 class="m-n font-thin h3"><span translate>VIEW_CHANGE_PASSWORD_TITLE</span></h1>
+        </div>
+
+        <div class="wrapper-md">
+            <div class="panel panel-default">
+
+                <div class="panel-body b-b b-light">
+                    <form name="passwordDetailsForm" class="signin" autocomplete="off">
+                        <fieldset>
+                            <div class="form-group" ng-class="{ 'has-error' : passwordDetailsForm.currentPassword.$invalid}">
+                                <label for="currentPassword" translate>VIEW_CHANGE_PASSWORD_CURRENT</label>
+                                <input type="password"
+                                       id="currentPassword"
+                                       name="currentPassword"
+                                       class="form-control"
+                                       data-ng-model="passwordDetails.currentPassword"
+                                       placeholder="{{'VIEW_CHANGE_PASSWORD_CURRENT_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : passwordDetailsForm.newPassword.$invalid}">
+                                <label for="newPassword" translate>VIEW_CHANGE_PASSWORD_NEW</label>
+                                <input type="password"
+                                       id="newPassword"
+                                       name="newPassword"
+                                       class="form-control"
+                                       data-ng-model="passwordDetails.newPassword"
+                                       placeholder="{{'VIEW_CHANGE_PASSWORD_NEW_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : passwordDetailsForm.verifyPassword.$invalid}">
+                                <label for="verifyPassword" translate>VIEW_CHANGE_PASSWORD_VERIFY</label>
+                                <input type="password"
+                                       id="verifyPassword"
+                                       name="verifyPassword"
+                                       class="form-control"
+                                       data-ng-model="passwordDetails.verifyPassword"
+                                       placeholder="{{'VIEW_CHANGE_PASSWORD_VERIFY_PLACEHOLDER'|translate}}">
+                            </div>
+
+                            <div data-ng-show="success" class="text-success">
+                                <div translate>VIEW_CHANGE_PASSWORD_CHANGE_SUCCESS</div>
+                            </div>
+                            <div data-ng-show="error" class="text-danger">
+                                <div data-ng-bind="error"></div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" ng-click="save(passwordDetailsForm.$valid)" translate>VIEW_BUTTON_SAVE</button>
+            <button class="btn btn-default btn-light" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+        </div>
+    </section>
+</script>
+<script type="application/javascript">
+    if (typeof ga !== "undefined") {
+        ga('set', 'page', '/profile');
+        ga('send', 'pageview');
+    }
+</script>

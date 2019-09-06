@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{{title}}</title>
+    <meta name="description" content="Call42, Callback Widget" />
+    <meta name="keywords" content="Call42, callback, widget" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    {% if build %}
+    <link rel="stylesheet" href="lib/animate.css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="lib/simple-line-icons/css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="home/css/font.css" type="text/css" />
+    <link rel="stylesheet" href="home/css/app.css" type="text/css" />
+    {% else %}
+    <link rel="stylesheet" href="lib/animate.css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="lib/simple-line-icons/css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="home/css/app.min.css" type="text/css" />
+    {%endif%}
+</head>
+<body>
+
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="lib/jquery/dist/jquery.js"></script>
+<script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="lib/jquery_appear/jquery.appear.js"></script>
+<script src="home/js/landing.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ widget_server_host }}/widget/css/style.css"/>
+<script type="text/javascript">
+    var widget_server_host = "{{ widget_server_host }}";
+    var widget_id = "{{  widget_id   }}";
+    var widget_options = {show_phoneicon: true};
+</script>
+<script type="text/javascript" src="{{ widget_server_host }}/widget/js/callback.js"></script>
+{{ analytics_outer | safe }}
+</body>
+</html>

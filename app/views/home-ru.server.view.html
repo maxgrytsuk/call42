@@ -1,0 +1,387 @@
+{% extends "layout.home.server.view.html" %}
+
+{% block content %}
+
+<!-- header -->
+<header id="header" class="navbar navbar-fixed-top bg-white-only padder-v"  data-spy="affix" data-offset-top="1">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="btn btn-link visible-xs pull-right m-r" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a href="#" class="navbar-brand m-r-lg"><span class="h3 font-bold">Call42</span></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav font-bold">
+                <li>
+                    <a href="#what" data-ride="scroll">Что такое Call42</a>
+                </li>
+                <li>
+                    <a href="#why" data-ride="scroll">Почему</a>
+                </li>
+                <li>
+                    <a href="#features" data-ride="scroll">Возможности</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="m-t-sm">
+                        <a id='signin' href="/app#!/access/signin?lang=ru" class="btn btn-link btn-sm">Вход</a> или
+                        <a href="/app#!/access/signup?lang=ru" class="btn btn-sm btn-success btn-rounded m-l"><strong>Регистрация</strong></a>
+                    </div>
+                </li>
+                <li style="padding-left: 20px">
+                    <div class="m-t-sm change-language btn-group">
+                        <a href="/ru" class="btn btn-link btn-sm"><strong>Рус</strong></a>
+                        <a href="/en" class="btn btn-link btn-sm"><strong>En</strong></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<!-- / header -->
+
+<div class="bg-white-only">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <div class="m-t-xxl m-b-xxl padder-v">
+                    <h1 class="font-bold l-h-1x m-t-xxl text-black padder-v animated fadeInDown">
+                        Call42
+                    </h1>
+                    <h3 class="text-muted m-t-xl l-h-1x">Call42 - это простой способ превратить посетителей Вашего сайта в <span class="b-b b-2x">реальных</span> клиентов.</h3>
+                </div>
+                <p class="text-center m-b-xxl wrapper">
+                    <a href="/app#!/access/signup?lang=ru" target="_blank" class="btn b-2x btn-lg b-black btn-default btn-rounded text-lg font-bold m-b-xxl animated fadeInUpBig">Зарегистрироваться бесплатно</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="what" class="padder-v bg-white-only">
+    <div class="container m-b-xxl">
+        <div class="row no-gutter">
+            <div class="col-md-3 col-sm-6">
+                <div class="bg-light m-r-n-md no-m-xs no-m-sm">
+                    <a href="/app#!/access/signup?lang=ru" class="wrapper-xl block">
+                        <span class="h3 m-t-sm text-black">Виджет обратного звонка</span>
+                        <span class="block m-b-md m-t">Установите виджет на Ваш сайт и начните получать запросы на обратный звонок от Ваших клиентов. Рост конверсии сайта составляет 250%.</span>
+                        <i class="icon-arrow-right text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="bg-black dker m-t-xl m-l-n-md m-r-n-md text-white no-m-xs no-m-sm">
+                    <a href="/app#!/access/signup?lang=ru" class="wrapper-xl block">
+                        <span class="h3 m-t-sm text-white">Поддержка Asterisk</span>
+                        <span class="block m-b-md m-t">У вас есть Asterisk система? Подключите ее к сайту с помощью виджета call42.</span>
+                        <i class="icon-arrow-right text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="bg-light dker m-t-n m-l-n-md m-r-n-md no-m-xs no-m-sm">
+                    <a href="/app#!/access/signup?lang=ru" class="wrapper-xl block">
+                        <span class="h3 m-t-sm text-black">Гибкие уведомления</span>
+                        <span class="block m-b-md m-t">Выберите наиболее удобный для Вас способ получения уведомлений о запросах на обратный звонок. Мы поддерживаем множество способов уведомления, таких как SMS, звонок через Asterisk, Twitter, Jabber, Email.</span>
+                        <i class="icon-arrow-right text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="bg-white dker m-t m-l-n-md m-r-n-md no-m-xs no-m-sm">
+                    <a href="/app#!/access/signup?lang=ru" class="wrapper-xl block">
+                        <span class="h3 m-t-sm text-black">Ни один запрос не будет потерян</span>
+                        <span class="block m-b-md m-t">Мы следим за тем, чтобы все запросы от клиентов были успешно пересланы менеджеру. В случае невозможности отправки уведомления, запрос включаются в email-дайжест (дайжест всегда бесплатен).</span>
+                        <i class="icon-arrow-right text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="why" class="bg-light">
+    <div class="container">
+        <div class="m-t-xxl m-b-xl text-center wrapper">
+            <h2 class="text-black font-bold">Почему нужно использовать <span class="b-b b-dark">Call42</span> для Вашего сайта?</h2>
+            <p class="text-muted h4 m-b-xl">Постройте надежный канал связи с вашими клиентами.</p>
+        </div>
+        <div class="row m-t-xl m-b-xl text-center">
+            <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
+                <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
+                    <i class="fa w-1x fa-check"></i>
+                </p>
+                <div class="m-b-xl">
+                    <h4 class="m-t-none">Разработано для нашего собственного бизнеса</h4>
+                    <p class="text-muted m-t-lg">Call42 был изначально разработан для нашего собственного сайта с заботой и любовью, чтобы сделать сервис гибким, удобным, простым в использовании и надежным.</p>
+                </div>
+            </div>
+            <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="600">
+                <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
+                    <i class="fa w-1x fa-gears"></i>
+                </p>
+                <div class="m-b-xl">
+                    <h4 class="m-t-none">Не дорого</h4>
+                    <p class="text-muted m-t-lg">У Вас есть 42 бесплатных уведомления каждый месяц. Email-дайжест всегда бесплатен. Свыше бесплатного лимита Вы платите только за реально полученные уведомления.</p>
+                </div>
+            </div>
+            <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="900">
+                <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
+                    <i class="fa w-1x fa-clock-o"></i>
+                </p>
+                <div class="m-b-xl">
+                    <h4 class="m-t-none">Начните работу в течение нескольких минут</h4>
+                    <p class="text-muted m-t-lg">Начать работу с Call42 очень просто. Вы можете получить полностью работающий виджет обратного звонка на вашем сайте в течение нескольких минут!</p>
+                </div>
+            </div>
+        </div>
+        <div class="m-t-xl m-b-xl text-center wrapper">
+            <p class="h4">Используйте его для
+                <span class="text-primary">привлечения новых клиентов</span>,
+                <span class="text-primary">отслеживания обращений с сайта</span>,
+                <span class="text-primary">подключения Asterisk-системы к Вашему сайту</span>...
+            </p>
+            <p class="m-t-xl"><a href="#testimonial" data-ride="scroll" class="btn btn-lg btn-white b-2x b-dark btn-rounded bg-empty m-sm">Что говорят наши клиенты</a></p>
+        </div>
+    </div>
+</div>
+<div id="features" class="bg-white-only">
+    <div class="container">
+        <div class="row m-t-xl m-b-xxl">
+            <!--div class="col-sm-6" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
+                <div class="m-t-xxl">
+                    <div class="m-b">
+                        <a href class="pull-left thumb-sm avatar"><img src="../html/img/a2.jpg" alt="..."></a>
+                        <div class="m-l-sm inline">
+                            <div class="pos-rlt wrapper b b-light r r-2x">
+                                <span class="arrow left pull-up"></span>
+                                <p class="m-b-none">Hey!</p>
+                            </div>
+                            <small class="text-muted"><i class="fa fa-ok text-success"></i> 1 hour ago</small>
+                        </div>
+                    </div>
+                    <div class="m-b text-right">
+                        <a href class="pull-right thumb-sm avatar"><img src="../html/img/a3.jpg" class="img-circle" alt="..."></a>
+                        <div class="m-r-sm inline text-left">
+                            <div class="pos-rlt wrapper bg-primary r r-2x">
+                                <span class="arrow right pull-up arrow-primary"></span>
+                                <p class="m-b-none">Hi John, What's up...</p>
+                            </div>
+                            <small class="text-muted">31 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="m-b">
+                        <a href class="pull-left thumb-sm avatar"><img src="../html/img/a1.jpg" alt="..."></a>
+                        <div class="m-l-sm inline">
+                            <div class="pos-rlt wrapper b b-light r r-2x">
+                                <span class="arrow left pull-up"></span>
+                                <p class="m-b-none">Have been working on the updates for many hours...</p>
+                            </div>
+                            <small class="text-muted"><i class="fa fa-ok text-success"></i> 2 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="m-b text-right">
+                        <a href class="pull-right thumb-sm avatar"><img src="../html/img/a3.jpg" class="img-circle" alt="..."></a>
+                        <div class="m-r-sm inline text-left">
+                            <div class="pos-rlt wrapper bg-info r r-2x">
+                                <span class="arrow right pull-up arrow-info"></span>
+                                <p class="m-b-none">Can not wait to see it:)</p>
+                            </div>
+                            <small class="text-muted">1 minutes ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+            <div class="col-sm-12 wrapper-xl">
+                <h3 class="text-dark font-bold m-b-lg">Увеличьте конверсию посетителей Вашего сайта в клиентов</h3>
+                <ul class="list-unstyled  m-t-xl">
+                    <li data-ride="animated" data-animation="fadeInUp" data-delay="600">
+                        <i class="icon-check pull-left text-lg m-r m-t-sm"></i>
+                        <p class="clear m-b-lg"><strong>Простая установка</strong>: <a href="/app#!/access/signup?lang=en" class=""><strong>Зарегистрируйтесь</strong></a>, получите код виджета для Вашего сайта и установите его на сайт. Несколько минут и Вы готовы получать запросы на обратный звонок от Ваших клиентов.</p>
+                    </li>
+                    <li data-ride="animated" data-animation="fadeInUp" data-delay="1100">
+                        <i class="icon-check pull-left text-lg m-r m-t-sm"></i>
+                        <p class="clear m-b-lg"><strong>Умные алгоритмы привлечения клиентов</strong>: мы используем специальные алгоритмы для анализа поведения посетителя сайта, виджет автоматически предлагает оставить запрос на обратный звонок для заинтересованных посетителей.</p>
+                    </li>
+                    <li data-ride="animated" data-animation="fadeInUp" data-delay="900">
+                        <i class="icon-check pull-left text-lg m-r m-t-sm"></i>
+                        <p class="clear m-b-lg"><strong>Удобные уведомления</strong>: Вы выбираете наиболее удобный способ уведомления - от СМС и сообщений в twitter до прямого звонка на Вашу Asterisk систему.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg-light">
+    <div class="container">
+        <div class="row m-t-xl m-b-xxl">
+            <div class="col-sm-6 wrapper-xl">
+                <h3 class="text-black font-bold m-b-lg">Надежный и масштабируемый</h3>
+                <p class="h4 l-h-1x">Сервис Call42 разработан на основе облачных сервисов Amazon AWS таким образом, чтобы обеспечить максимальную надежность и масштабируемость. Он отлично работает как на небольших сайтах, так и на больших, высоконагруженных вебсайтах.</p>
+            </div>
+            <div class="col-sm-6" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
+                <div class="m-t-xxl text-center">
+                    <span class="text-2x text-muted"><i class="icon-screen-smartphone text-2x"></i></span>
+                    <span class="text-3x text-muted"><span class="text-2x"><i class="icon-screen-desktop text-2x"></i></span></span>
+                    <span class="text-3x text-muted"><i class="icon-screen-tablet text-2x"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg-white-only">
+    <div class="container">
+        <div class="row m-t-xl m-b-xxl">
+            <div class="col-sm-6" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
+                <div class="m-t-xxl text-center">
+                    <p>
+                        <a id='signin' href="/app#!/access/signup?lang=en" class="text-sm btn btn-lg btn-rounded btn-default m-sm">
+                            <i class="fa fa-space-shuttle fa-3x pull-left m-l-sm"></i>
+                            <span class="block clear m-t-xs text-left m-r m-l">Готовы начать? <b class="text-lg block font-bold">Зарегистрироваться</b></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a id='signin' href="/app#!/access/signin?lang=en" class="text-sm btn btn-lg btn-rounded btn-default m-sm">
+                            <i class="fa fa-sign-in fa-3x pull-left m-l-sm"></i>
+                            <span class="block clear m-t-xs text-left m-r m-l">Уже зарегистрированы? <b class="text-lg block font-bold">Войти</b></span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6 wrapper-xl">
+                <h3 class="text-black font-bold m-b-lg">Получите больше клиентов уже сегодня</h3>
+                <p class="h4 l-h-1x">Call42 начинает приводить новых клиентов сразу после установки на Ваш сайт. Попробуйте, это легко и бесплатно.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="testimonial" class="bg-black dker clearfix">
+    <div class="container m-t-xxl m-b-xxl padder-v">
+        <div class="carousel auto slide clearfix" id="b-slide" data-interval="6000">
+            <ol class="carousel-indicators">
+                <li data-target="#b-slide" data-slide-to="0" class=""></li>
+                <li data-target="#b-slide" data-slide-to="1" class="active"></li>
+                <li data-target="#b-slide" data-slide-to="2" class=""></li>
+            </ol>
+            <div class="carousel-inner text-center m-t-xl m-b-xl">
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 m-b-xl">
+                            <h4 class="font-thin l-h-2x text-white m-b-lg"><em>Call42 привел 3 новых клиентов через несколько минут после установки на наш сайт. Мы сразу полюбили этот инструмент для увеличения продаж.</em></h4>
+                            <!--p class="text-muted">- Suzanne Oliver, Chief Learning Officer</p-->
+                        </div>
+                    </div>
+                </div>
+                <div class="item active">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3  m-b-xl">
+                            <h4 class="font-thin l-h-2x text-white m-b-lg"><em>Мы очень быстро привыкли к виджету, он стал неотъемлемой частью нашего рабочего процесса. Мы заметили, что Call42 не только приносит нам новых клиентов, но также и наши существующие клиенты используют его для связи с менеджером технической поддержки.</em></h4>
+                            <!--p class="text-muted">- Leah Tate, PM</p-->
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3  m-b-xl">
+                            <h4 class="font-thin l-h-2x text-white m-b-lg"><em>Нам очень понравилась идея виджета и результаты его работы, спасибо команде Call42 за отличный сервис!</em></h4>
+                            <!--p class="text-muted">- Chapman, Employee Development Manager</p-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="left carousel-control" href="#b-slide" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </a>
+            <a class="right carousel-control" href="#b-slide" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="bg-info">
+            <div class="container">
+                <div class="row m-t-xl m-b-xl">
+                    <div class="col-sm-6 text-white text-center">
+                        <h4 class="m-b">Готовы начать?</h4>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <a href="/app#!/access/signup?lang=en" class="btn btn-lg btn-default btn-rounded">Зарегистрируйтесь сейчас</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="bg-white">
+            <div class="container">
+                <div class="row m-t-xl m-b-xl">
+                    <div class="col-sm-3">
+                        <h4 class="text-u-c m-b font-thin"><span class="b-b b-dark font-bold">Version</span> options</h4>
+                        <ul class="list-unstyled">
+                            <li><a href="../angular"><i class="fa fa-angle-right m-r-sm"></i>Angular App</a></li>
+                            <li><a href="../html"><i class="fa fa-angle-right m-r-sm"></i>Html Template</a></li>
+                            <li><a href="../angular/#music/home"><i class="fa fa-angle-right m-r-sm"></i>Music single page application</a></li>
+                            <li><a href="#"><i class="fa fa-angle-right m-r-sm"></i>App landing page</a></li>
+                        </ul>
+                        <p class="m-b-xl">More coming...</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h4 class="text-u-c m-b font-thin"><span class="b-b b-dark font-bold">Find</span> Us</h4>
+                        <p class="text-sm">23 soe Midlokls <br>
+                            120002 Loki — UNITED KINGDOM <br>
+                            +333 432 321 322
+                        </p>
+                        <p>Sale: <a href="mailto:hey@example.com">info@example.com</a></p>
+                        <p class="m-b-xl">Job: <a href="mailto:hey@example.com">job@example.com</a></p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h4 class="text-u-c m-b-xl font-thin"><span class="b-b b-dark font-bold">Follow</span> Us</h4>
+                        <div class="m-b-xl">
+                            <a href="#" class="btn btn-icon btn-rounded btn-dark"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="btn btn-icon btn-rounded btn-dark"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="btn btn-icon btn-rounded btn-dark"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="btn btn-icon btn-rounded btn-dark"><i class="fa fa-linkedin"></i></a>
+                            <a href="#" class="btn btn-icon btn-rounded btn-dark"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <h4 class="text-u-c m-b font-thin"><span class="b-b b-dark font-bold">News</span> Letter</h4>
+                        <p>Do not want to miss anything? Subscribe to our newsletter box</p>
+                        <form class="form-inline m-t m-b text-center m-b-xl">
+                            <div class="aside-xl inline">
+                                <div class="input-group">
+                                    <input type="text" id="address" name="address" class="form-control btn-rounded" placeholder="Your email">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default btn-rounded" type="submit">Subscribe</button>
+                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div-->
+        <div class="bg-light dk">
+            <div class="container">
+                <div class="row padder-v m-t">
+                    <div class="col-xs-8">
+                        <!--ul class="list-inline">
+                            <li><a href="#">Sales</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">API</a></li>
+                            <li><a href="#">Contact us</a></li>
+                            <li><a href="#">Job</a></li>
+                        </ul-->
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        Call42 &copy; 2015
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- / footer -->
+
+    {% endblock %}

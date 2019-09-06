@@ -1,0 +1,99 @@
+<section class="app-section user-edit" data-ng-controller="AdminController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h4"><span>Общие настройки</span></b></h1>
+    </div>
+    <div class="wrapper-md">
+        Количество бесплатных уведомлений (из конфига): {{notificationsMax.value}}
+    </div>
+
+    <div class="wrapper-md" style="width:50%;float: left">
+        <h3>Цены уведомлений</h3>
+        <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Валюта</th>
+                            <th>Тип уведомления</th>
+                            <th>Цена</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr data-ng-repeat="item in standardPrices | orderBy: 'currency.name' ">
+                            <td>
+                                <span data-ng-bind="item.currency.name"></span>
+                            </td>
+                            <td>
+                                <span data-ng-bind="item.notification_type"></span>
+                            </td>
+                            <td>
+                                <input data-ng-model="item.price">
+                                <span>{{item.currency.name}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+            <div style="float: right;margin: 10px">
+                <button type="submit" class="btn btn-success btn-sm" data-ng-click="updatePrices()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper-md" style="width:50%; float:left">
+        <h3>Курсы валют</h3>
+        <div class="form-group" style="width: 280px">
+            <p class="input-group">
+                <input type="text"
+                       class="form-control"
+                       uib-datepicker-popup="dd-MM-yyyy"
+                       datepicker-options="dateOptions"
+                       ng-model="ratesDate"
+                       is-open="isOpened"
+                       ng-change="getRates()"
+                       clear-text="{{'CLEAR' | translate}}"
+                       close-text="{{'CLOSE' | translate}}"
+                       current-text="{{'TODAY' | translate}}"
+                        />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+        <div ng-if="!isChoosenRate">
+            Курса на выбранную дату нет, выведен курс на последнюю доступную дату<b class="m-l-xs">{{ratesDateFormatted}}</b>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="2">Валюты</th>
+                            <th>Курс</th>
+                            <th>Обратный курс</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr data-ng-repeat="item in rates ">
+                            <td><span>{{item.currencyFrom}}</span></td>
+                            <td><span>{{item.currencyTo}}</span></td>
+                            <td><span>{{item.rate}}</span></td>
+                            <td><span>{{(1 / item.rate).toFixed(4)}}</span></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,60 @@
+<form name="form" class="form-validation form-horizontal" data-ng-submit="save(form)" novalidate>
+    <div class="wrapper-md" style="padding-top: 0px">
+        <div style="padding-bottom: 20px" ng-if="mode === 'edit'">
+                    <span class="controls" >
+                        <label class="i-switch bg-info m-t-xs m-r">
+                            <input name="enabled"
+                                   type="checkbox"
+                                   data-ng-model="channel.isEnabled"
+                                   id="enabled">
+                            <i></i>
+                        </label>
+                    </span>
+            <span style="vertical-align: super;" translate>VIEW_CHANNELS_TURN_OFF</span>
+        </div>
+        <div ng-class=" mode === 'edit' ? 'panel panel-default' : '' ">
+            <div ng-class=" mode === 'edit' ? 'panel-body' : '' ">
+                <div ng-class=" mode === 'edit' ? 'col-md-12' : '' ">
+
+                    <fieldset>
+
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.phone.$invalid}">
+                            <label class="control-label" for="list" translate>
+                                VIEW_CHANNEL_EDIT_SMS_PHONE
+                            </label>
+                            <div class="controls">
+                                <input name="sms"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.phone"
+                                       ng-change="setSubmitted(form)"
+                                       id="list"
+                                       class="form-control"
+                                       placeholder="{{phoneCodeText}}" required>
+                            </div>
+                            <div ng-show="form.$submitted && form.phone.$invalid" class="help-block">
+                                <p ng-show="form.$submitted && form.phone.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                            </div>
+                        </div>
+                        <div data-ng-show="error" class="text-danger">
+                            <div data-ng-bind="error"></div>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div style="float: left" ng-if="mode === 'edit'">
+            <div class="btn btn-default btn-light btn-sm" ng-click="delete(channel)" translate>VIEW_CHANNELS_DELETE</div>
+        </div>
+        <div style="float:right;">
+            <input type="submit"
+                   class="btn btn-success btn-sm"
+                   value="{{'VIEW_BUTTON_SAVE'|translate}}"
+                   translate>
+            </input>
+            <div class="btn btn-default btn-light btn-sm" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,64 @@
+<section class="app-section widget-edit" data-ng-controller="WidgetsController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h4"><span translate>VIEW_WIDGET_CREATE_TITLE</span></h1>
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form name="form" class="form-validation form-horizontal" data-ng-submit="createWidget(form.$isValid)" novalidate>
+                        <fieldset>
+
+                            <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.name.$invalid}">
+                                <label class="control-label small" for="name" translate>VIEW_WIDGET_NAME</label>
+                                <div class="controls">
+                                    <input
+                                            name="name"
+                                            type="text"
+                                            data-ng-model="widget.name"
+                                            id="name"
+                                            class="form-control small-width"
+                                            placeholder="{{ 'VIEW_WIDGET_NAME_PLACEHOLDER' | translate}}" required>
+                                </div>
+                                <div ng-show="form.$submitted && form.name.$invalid" class="help-block">
+                                    <p ng-show="form.name.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.urls.$invalid}">
+                                <label class="control-label small" for="urls" translate>VIEW_WIDGET_URLS</label>
+                                <div class="controls">
+                                    <input
+                                            name="urls"
+                                            type="text"
+                                            data-ng-model="widget.urls"
+                                            id="urls"
+                                            class="form-control small-width"
+                                            placeholder="{{'VIEW_WIDGET_URLS_PLACEHOLDER'|translate}}" required urls>
+                                </div>
+                                <div ng-show="form.$submitted && form.urls.$invalid" class="help-block">
+                                    <p ng-show="form.urls.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                                    <p ng-show="form.urls.$error.urls" class="text-danger" translate>VIEW_WIDGET_URLS_VALIDATION_CORRECT_URL</p>
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group">
+                                <input type="submit"
+                                       class="btn m-b-xs w-xs btn-success btn-sm"
+                                       value="{{'VIEW_WIDGETS_BUTTON_CREATE'|translate}}"
+                                       translate>
+                                </input>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

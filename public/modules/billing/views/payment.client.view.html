@@ -1,0 +1,100 @@
+<section class="app-section user-edit" data-ng-controller="BillingController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><span translate>VIEW_PAYMENT_TITLE</span></h1>
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+
+            <div class="panel-body b-b b-light">
+
+                <div style="float: left;width: 400px;border-right: 1px grey">
+                    <img src="//liqpay.com/static/img/logo_doc.png"/>
+                    <div style="margin-top: 20px; margin-left: 20px;">
+                        <div translate>VIEW_PAYMENT_TEXT1</div>
+                        <div style="margin-left: 10px">
+                            <div style="padding-top: 7px" translate>VIEW_PAYMENT_TEXT2</div>
+                            <div style="padding-top: 7px" translate>VIEW_PAYMENT_TEXT3</div>
+                            <div style="padding-top: 7px" translate>VIEW_PAYMENT_TEXT4</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="float: left">
+                    <div style="margin-top: 50px">
+                        <div><span translate>VIEW_PAYMENT_USER</span>:<b> {{user.username}}</b></div>
+                        <i>{{user.email}}</i>
+
+                        <div style="margin-bottom:32px;"></div>
+
+
+                        <div style="float: left; margin-bottom: 20px;" class="form-group" data-ng-show="!isCurrencyChosen(user)">
+                            <span style="padding-right: 20px"><label for="currency" translate>CURRENCY</label>:</span>
+
+                            <select
+                                    style="display: inline; width: 100px"
+                                    data-ng-change="setUserCurrency({id:userCurrency._id})"
+                                    class="form-control"
+                                    ng-model="userCurrency"
+                                    ng-options="currency.name for currency in currencies"
+                                    id="currency">
+                            </select>
+
+
+                            <div style="clear:both;width:500px;margin-top: 10px;" translate>
+                                VIEW_PAYMENT_TEXT5
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                        <div>
+                            <div style="float: left">
+                                <form autocomplete="off">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <span style="padding-right: 5px"><label for="amount" translate>VIEW_PAYMENT_AMOUNT</label>:</span>
+                                            <input style="display: inline; width: 100px; text-align: center;"
+                                                   type="number"
+                                                   id="amount"
+                                                   name="amount"
+                                                   class="form-control"
+                                                   data-ng-model="payment.amount"
+                                                   data-ng-change="getLiqPayFormData()"
+                                                   placeholder="{{'VIEW_PAYMENT_AMOUNT_PLACEHOLDER'|translate}}">
+                                            <span>{{user.currency.name}}</span>
+                                        </div>
+
+                                    </fieldset>
+                                </form>
+                            </div>
+
+                            <div style="float: left;margin-left: 20px">
+                                <form method="POST" action="https://www.liqpay.com/api/checkout" accept-charset="utf-8">
+                                    <input type="hidden" name="data" value="{{liqPay.data}}"/>
+                                    <input type="hidden" name="signature" value="{{liqPay.signature}}"/>
+                                    <input class="btn btn-success"
+                                           type="submit"
+                                           data-ng-click="onPay()"
+                                           ng-style="liqPay ? {'opacity':1}: {'opacity':0.5} "
+                                           ng-disabled="liqPay?'': 'disabled' "
+                                           value="{{ 'VIEW_PAYMENT_BUTTON' | translate}}"
+                                            >
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script type="application/javascript">
+        if (typeof ga !== "undefined") {
+            ga('set', 'page', '/payment');
+            ga('send', 'pageview');
+        }
+    </script>
+</section>

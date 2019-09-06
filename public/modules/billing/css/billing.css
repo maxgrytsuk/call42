@@ -1,0 +1,35 @@
+.balance table {
+    border: 1px solid rgb(234, 239, 240);
+}
+.balance table td,
+.balance table th {
+    min-width: 2em;
+    min-height: 2em;
+    border: 1px solid rgb(234, 239, 240);
+    text-align: center;
+}
+.balance table th {
+    vertical-align: middle !important;
+}
+.balance-info .name{
+    width: 150px;
+}
+table.balance-info{
+    border: none !important;
+}
+table.balance-info td{
+    vertical-align: top;
+    border: none !important;
+}
+table.balance-info td{
+    text-align: left !important;
+}
+table.balance-info tr{
+    border: none !important;
+}
+table .payment-info, table .payment-info tr, table .payment-info td {
+    border: none;
+}
+table .payment-info tr, table .payment-info td {
+    text-align: left;
+}

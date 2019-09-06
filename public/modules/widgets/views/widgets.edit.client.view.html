@@ -1,0 +1,528 @@
+<section class="app-section widget-edit" data-ng-controller="WidgetsController" data-ng-init="findWidget()">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h4"><span translate>VIEW_WIDGET_EDIT_TITLE</span>: <b data-ng-bind="widget.name"></b></h1>
+    </div>
+
+    <div class="wrapper-md">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4 ng-click="isWidgetCodeCollapsed = !isWidgetCodeCollapsed" style="cursor: pointer">
+                            <span>
+                                <span ng-show="isWidgetCodeCollapsed" class="glyphicon glyphicon-chevron-down btn-xs" ></span>
+                                <span ng-show="!isWidgetCodeCollapsed" class="glyphicon glyphicon-chevron-up btn-xs" ></span>
+                            </span>
+                    <span translate>VIEW_WIDGET_CODE_TITLE</span>
+                </h4>
+                <div class="m-t" uib-collapse="isWidgetCodeCollapsed">
+                    <div>
+                        <div style="background-color: rgb(240, 243, 244); color: green; padding: 10px">
+                            <div style="display:block" data-ng-repeat="line in widgetCodeLines">
+                                {{line}}
+                            </div>
+                        </div>
+                    </div>
+                    <div translate style="padding-top: 15px; color: #f05050;">VIEW_WIDGET_CODE_TEXT1</div>
+                    <div translate style="color: #f05050;">VIEW_WIDGET_CODE_TEXT2</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <form name="form" class="form-validation form-horizontal" data-ng-submit="updateWidget(form.$valid)" novalidate>
+                        <fieldset>
+
+                            <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.name.$invalid}">
+                                <label class="control-label small" for="name" translate>VIEW_WIDGET_NAME</label>
+                                <div class="controls">
+                                    <input
+                                            name="name"
+                                            type="text"
+                                            data-ng-model="widget.name"
+                                            id="name"
+                                            class="form-control small-width"
+                                            placeholder="{{ 'VIEW_WIDGET_NAME_PLACEHOLDER' | translate}}" required>
+                                </div>
+                                <div ng-show="form.$submitted && form.name.$invalid" class="help-block">
+                                    <p ng-show="form.name.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.urls.$invalid}">
+                                <label class="control-label small" for="urls" translate>VIEW_WIDGET_URLS</label>
+                                <div class="controls">
+                                    <input
+                                            name="urls"
+                                            type="text"
+                                            data-ng-model="widget.urls"
+                                            id="urls"
+                                            class="form-control small-width"
+                                            placeholder="{{'VIEW_WIDGET_URLS_PLACEHOLDER'|translate}}" required urls>
+                                </div>
+                                <div ng-show="form.$submitted && form.urls.$invalid" class="help-block">
+                                    <p ng-show="form.urls.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                                    <p ng-show="form.urls.$error.urls" class="text-danger" translate>VIEW_WIDGET_URLS_VALIDATION_CORRECT_URL</p>
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="panel panel-default channels" style="width:900px">
+                                <div class="panel-heading" translate>
+                                    VIEW_CHANNELS_LIST
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table b-t b-light channels" ng-style="{height: ((widget.channels.length * 175 + 40) + 'px')}">
+                                        <thead data-ng-show="widget.channels.length">
+                                        <tr style="background-color: #EAEFF0; height: 32px;">
+                                            <th style="width: 400px" translate>VIEW_CHANNELS_CHANNEL</th>
+                                            <th style="width: 350px" translate>VIEW_CHANNELS_WORK_TIME_SETTINGS</th>
+                                            <th translate>VIEW_CHANNELS_ACTIONS</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-show="!widget.channels.length" class="empty">
+                                            <td align="center">
+                                                <span translate>{{channelsEmptyText}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr data-ng-repeat="channel in widget.channels" class="channel" ng-style="{top: ((34 + channel.idx * 175) + 'px')}">
+                                            <td style="width: 400px"  ng-class=" !channel.model.isEnabled?'disabled':'' ">
+                                                <div>
+                                                    <span><b>{{channel.model.type}}</b></span>:
+                                                    <span><i>{{getChannelInfo(channel.model)}}</i></span>
+                                                </div>
+                                                <div ng-show="!channel.model.isEnabled" translate>VIEW_CHANNELS_DISABLED</div>
+                                                <br>
+                                                <div class="form-group" ng-show="!isFirst(channel)">
+                                                    <div class="controls">
+
+                                                        <label class="i-switch m-t-xs m-r">
+
+                                                            <input name="skiped"
+                                                                   class="i-switch m-t-xs m-r"
+                                                                   type="checkbox"
+                                                                   data-ng-model="channel.model.skipOnSuccess"
+                                                                   data-ng-change="updateChannel(channel.model)"
+                                                                   id="skiped">
+                                                            <i></i>
+                                                        </label>
+
+                                                        <span style="vertical-align: super" translate>VIEW_CHANNELS_SKIP_ON_SUCCESS</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-show="channel.model.sendIfOffline !== null">
+                                                    <div class="controls">
+
+                                                        <label class="i-switch m-t-xs m-r">
+
+                                                            <input
+                                                                    name="sendIfOffline"
+                                                                    type="checkbox"
+                                                                    data-ng-model="channel.model.sendIfOffline"
+                                                                    data-ng-change="updateChannel(channel.model)"
+                                                                    id="sendIfOffline">
+                                                            <i></i>
+                                                        </label>
+
+                                                        <span style="vertical-align: super" translate>VIEW_CHANNELS_SEND_IF_OFFLINE</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td  ng-class=" !channel.model.isEnabled?'disabled':'' " style="width: 350px">
+                                                <work-time-settings model="channel.model" settings="channel.model.workTime" on-update="findWidget()"></work-time-settings>
+                                            </td>
+                                            <td style="width: 150px; vertical-align: middle; padding-left: 0px">
+                                                <div style="float: left">
+                                                    <div style="cursor: pointer"
+                                                         ng-click="moveChannel(channel, -1)"
+                                                         ng-style="isFirst(channel) || isLast(channel)?{'margin-top':'12px'}:{}"
+                                                         ng-show="!isFirst(channel)">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </div>
+                                                    <div style="cursor: pointer"
+                                                         ng-click="moveChannel(channel, 1)"
+                                                         ng-style="isFirst(channel) || isLast(channel)?{'margin-top':'12px'}:{}"
+                                                         ng-show="!isLast(channel)">
+                                                        <i class="fa fa-chevron-down"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="m-l" style="float: left;margin-top: 6px">
+                                                    <a class="btn m-b-xs btn-default btn-light btn-sm"
+                                                       ng-click="editChannel(channel)"
+                                                       translate>
+                                                        VIEW_CHANNELS_EDIT
+                                                    </a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="controls" style="border-top: solid 1px rgb(234, 239, 240); padding: 10px;">
+                                    <select
+                                            style="width: 25%; float: left"
+                                            class="form-control inline"
+                                            ng-model="selectedChannelType"
+                                            ng-options="type for type in channelTypes"
+                                            id="widget">
+                                        <option value="" translate>VIEW_CHANNELS_CHOOSE_CHANNEL</option>
+                                    </select>
+                                    <a ng-click="addChannel()"
+                                       style="margin-left: 20px;vertical-align: text-top;"
+                                       class="btn m-b-xs btn-success btn-sm"
+                                       popover-placement="right"
+                                       popover="{{'VIEW_CHANNELS_CHOOSE_CHANNEL_TOOLTIP' | translate}}"
+                                       popover-enable="!selectedChannelType"
+                                       translate>VIEW_CHANNELS_ADD_CHANNEL</a>
+                                </div>
+
+                            </div>
+
+                            <h4 style="cursor: pointer; margin-bottom: 20px; margin-top: 40px;">
+                                <div class="form-group">
+                                                <span class="controls">
+
+                                                    <label class="i-switch m-t-xs m-r">
+
+                                                        <input name="auto_invitation_enabled"
+                                                               type="checkbox"
+                                                               data-ng-model="widget.public.auto_invitation.is_enabled"
+                                                               id="auto_invitation_enabled">
+                                                        <i></i>
+                                                    </label>
+
+                                                </span>
+                                    <span style="vertical-align: text-top" translate>VIEW_DIALOG_BEHAVIOR_TITLE</span>
+                                </div>
+                            </h4>
+                            <div data-ng-show="widget.public.auto_invitation.is_enabled">
+
+                                <h5><b translate>VIEW_WIDGET_AUTO_INVITATION_CHOOSE</b></h5>
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label class="i-checks">
+                                            <input type="radio"
+                                                   name="autoInvitationMode"
+                                                   value="BY_ONLINE_CHANNEL"
+                                                   data-ng-model="widget.public.auto_invitation.mode"
+                                                   checked=""
+                                                   ng-disabled="!hasOnlineChannels(widget)"
+                                                    >
+                                            <i></i>
+                                        </label>
+                                        <span ng-class="hasOnlineChannels(widget)?'':'disabled'" translate>VIEW_WIDGET_AUTO_INVITATION_ON_ONLINE_CHANNEL</span>
+                                        <span style="color:red" ng-if="!hasOnlineChannels(widget)" translate>VIEW_WIDGET_AUTO_INVITATION_ON_ONLINE_CHANNEL_ABSENT</span>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="i-checks">
+                                            <input type="radio"
+                                                   name="autoInvitationMode"
+                                                   value="BY_SCHEDULE"
+                                                   data-ng-model="widget.public.auto_invitation.mode"
+                                                   checked="">
+                                            <i></i>
+                                        </label>
+                                        <span translate>VIEW_WIDGET_AUTO_INVITATION_BY_SCHEDULE</span>
+                                    </div>
+                                    <div style="width:50%; margin-top: 10px;" data-ng-show="widget.public.auto_invitation.mode === 'BY_SCHEDULE' ">
+                                        <work-time-settings model="widget" settings="widget.public.auto_invitation.workTime" on-update="findWidget()"></work-time-settings>
+                                    </div>
+                                </div>
+                                <h5><b translate>VIEW_WIDGET_AUTO_INVITATION_SETTINGS</b></h5>
+
+                                <div style="clear: both">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.auto_invitation.activate_time.$invalid}">
+                                        <span translate>VIEW_DIALOG_BEHAVIOR_ACTIVATE_TIME_1</span>
+                                        <input name="activate_time"
+                                               type="number"
+                                               min="0"
+                                               data-ng-model="widget.public.auto_invitation.activate_time"
+                                               id="activate_time"
+                                               class="form-control small-width form-control-inline"
+                                               required>
+                                        <span translate>VIEW_DIALOG_BEHAVIOR_ACTIVATE_TIME_2</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.auto_invitation.activate_page_limit.$invalid}">
+
+                                        <span translate>VIEW_DIALOG_BEHAVIOR_ACTIVATE_PAGE_LIMIT_1</span>
+
+                                        <input name="activate_page_limit"
+                                               type="number"
+                                               min="1"
+                                               data-ng-model="widget.public.auto_invitation.activate_page_limit"
+                                               id="activate_page_limit"
+                                               class="form-control small-width form-control-inline"
+                                               required>
+
+                                        <span translate>VIEW_DIALOG_BEHAVIOR_ACTIVATE_PAGE_LIMIT_2</span>
+
+                                        <input name="activate_page_limit_time"
+                                               type="number"
+                                               min="0"
+                                               data-ng-model="widget.public.auto_invitation.activate_page_limit_time"
+                                               id="activate_page_limit_time"
+                                               class="form-control small-width form-control-inline"
+                                               required>
+
+                                        <span translate>VIEW_DIALOG_BEHAVIOR_ACTIVATE_PAGE_LIMIT_3</span>
+
+                                    </div>
+
+                                </div>
+                                <br>
+                            </div>
+                            <h5 ng-click="isDialogTextsCollapsed = !isDialogTextsCollapsed" style="cursor: pointer">
+                                    <span>
+                                        <span ng-show="isDialogTextsCollapsed" class="glyphicon glyphicon-chevron-down btn-xs" ></span>
+                                        <span ng-show="!isDialogTextsCollapsed" class="glyphicon glyphicon-chevron-up btn-xs" ></span>
+                                    </span>
+                                <b><span translate>VIEW_DIALOG_TEXT_TITLE</span></b>
+                            </h5>
+
+                            <div uib-collapse="isDialogTextsCollapsed">
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_on_online.$invalid}">
+                                    <label class="control-label small" for="dialog_on_online" translate>
+                                        VIEW_DIALOG_TEXT_ON_ONLINE
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_on_online"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_on_online"
+                                               id="dialog_on_online"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_automatic.$invalid}">
+                                    <label class="control-label small" for="dialog_automatic" translate>
+                                        VIEW_DIALOG_TEXT_AUTO
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_automatic"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_automatic"
+                                               id="dialog_automatic"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_on_offline.$invalid}">
+                                    <label class="control-label small" for="dialog_on_offline" translate>
+                                        VIEW_DIALOG_TEXT_ON_OFFLINE
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_on_offline"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_on_offline"
+                                               id="dialog_on_offline"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_phone_number_placeholder.$invalid}">
+                                    <label class="control-label small" for="dialog_phone_number_placeholder" translate>
+                                        VIEW_DIALOG_TEXT_PHONE_NUMBER_PLACEHOLDER
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_phone_number_placeholder"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_phone_number_placeholder"
+                                               id="dialog_phone_number_placeholder"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_button.$invalid}">
+                                    <label class="control-label small" for="dialog_button" translate>
+                                        VIEW_DIALOG_TEXT_BUTTON
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_button"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_button"
+                                               id="dialog_button"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_connection_check.$invalid}">
+                                    <label class="control-label small" for="dialog_connection_check" translate>
+                                        VIEW_DIALOG_TEXT_CONNECTION_CHECK
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_connection_check"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_connection_check"
+                                               id="dialog_connection_check"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_button_on_connect.$invalid}">
+                                    <label class="control-label small" for="dialog_button_on_connect" translate>
+                                        VIEW_DIALOG_TEXT_BUTTON_ON_CONNECT
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_button_on_connect"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_button_on_connect"
+                                               id="dialog_button_on_connect"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_thank_you.$invalid}">
+                                    <label class="control-label small" for="dialog_thank_you" translate>
+                                        VIEW_DIALOG_TEXT_THANK_YOU
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_thank_you"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_thank_you"
+                                               id="dialog_thank_you"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_error.$invalid}">
+                                    <label class="control-label small" for="dialog_error" translate>
+                                        VIEW_DIALOG_TEXT_ERROR
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_error"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_error"
+                                               id="dialog_error"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_connection_failure.$invalid}">
+                                    <label class="control-label small" for="dialog_connection_failure" translate>
+                                        VIEW_DIALOG_TEXT_CONNECTION_FAILURE
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_connection_failure"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_connection_failure"
+                                               id="dialog_connection_failure"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.dialog_connection_impossible.$invalid}">
+                                    <label class="control-label small" for="dialog_connection_impossible" translate>
+                                        VIEW_DIALOG_TEXT_CONNECTION_IMPOSSIBLE
+                                    </label>
+                                    <div class="controls">
+                                        <input name="dialog_connection_impossible"
+                                               type="text"
+                                               data-ng-model="widget.public.texts.dialog_connection_impossible"
+                                               id="dialog_connection_impossible"
+                                               class="form-control"
+                                               placeholder="{{'VIEW_DIALOG_TEXT_PLACEHOLDER'|translate}}">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+
+                            <div style="float: left">
+                                <a class="btn btn-default btn-light btn-sm" ng-click="deleteWidget()" translate>VIEW_WIDGET_BUTTON_DELETE</a>
+                            </div>
+                            <div style="float: right">
+                                <input style="margin-right: 10px"
+                                       type="submit"
+                                       class="btn btn-success btn-sm"
+                                       value="{{'VIEW_BUTTON_SAVE'|translate}}"
+                                       translate>
+                                </input>
+                                <a style=" margin-right: 10px" class="btn btn-default btn-light btn-sm" ui-sref="app.listWidgets" translate>VIEW_BUTTON_CANCEL</a>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<script type="text/ng-template" id="confirmWidgetDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title" translate>VIEW_WIDGET_DELETE_DIALOG_TITLE</h3>
+    </div>
+    <div class="modal-body" translate>
+        VIEW_WIDGET_DELETE_DIALOG_TEXT
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" ng-click="ok()" translate>VIEW_BUTTON_DELETE</button>
+        <button class="btn btn-default btn-light btn-sm" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmChannelDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title" translate>VIEW_CHANNEL_DELETE_DIALOG_TITLE</h3>
+    </div>
+    <div class="modal-body" translate>
+        VIEW_CHANNEL_DELETE_DIALOG_TEXT
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" ng-click="ok()" translate>VIEW_BUTTON_DELETE</button>
+        <button class="btn btn-default btn-light btn-sm" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+    </div>
+</script>
+<script type="text/ng-template" id="createChannel.html">
+    <div class="modal-header">
+        <h3 class="modal-title"><span translate>VIEW_CHANNEL_ADD_TITLE</span><span><b>{{channel.type}}</b></span></h3>
+    </div>
+    <div class="modal-body">
+        <div ng-include="getTemplateName()"></div>
+    </div>
+</script>
+<script type="text/ng-template" id="editChannel.html">
+    <div class="modal-header">
+        <h3 class="modal-title"><span translate>VIEW_CHANNEL_EDIT_TITLE</span><span><b>{{channel.type}}</b></span></h3>
+    </div>
+    <div class="modal-body">
+        <div ng-include="getTemplateName()"></div>
+    </div>
+</script>
+<script type="text/ng-template" id="workTimePicker.html">
+    <div style="margin-top: 8px">
+        <span ng-class="{'has-error': invalidHours}">
+            <input style="width:50px;float: left" type="text" ng-model="hours" ng-change="updateHours()" class="form-control text-center" maxlength="2" ng-disabled="!available">
+        </span>
+        <span style="float: left;margin-top: 5px">:</span>
+        <span ng-class="{'has-error': invalidMinutes}">
+            <input style="width:50px;float: left" type="text" ng-model="minutes" ng-change="updateMinutes()" class="form-control text-center" maxlength="2" ng-disabled="!available">
+        </span>
+    </div>
+</script>
+<script type="application/javascript">
+    if (typeof ga !== "undefined") {
+        ga('set', 'page', '/widget/edit');
+        ga('send', 'pageview');
+    }
+</script>

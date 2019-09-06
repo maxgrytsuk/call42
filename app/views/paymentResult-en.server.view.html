@@ -1,0 +1,15 @@
+{% extends "layout.paymentResult.server.view.html" %}
+
+{% block content %}
+
+<div class="bg-white-only content">
+    <div style="padding-bottom: 10px">The payment was made, wait for confirmation or check
+        <a href="/app#!/settings/profile">the account balance</a> later
+    </div>
+    <div>Current payment status:
+        <b id="status"></b>
+        <img id="check_status_indicator" style="height: 20px;" src="/paymentResult/img/wait.gif">
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+<div class="panel panel-default">
+    <div class="table-responsive widgets">
+        <table class="table table-striped">
+
+            <thead>
+            <tr>
+                <th style="width: 200px" translate>VIEW_WIDGETS_NAME</th>
+                <th translate>VIEW_WIDGETS_URLS</th>
+                <th ng-if="!isAdmin"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr data-ng-repeat="widget in widgets">
+                <td><span data-ng-bind="widget.name"></span></td>
+                <td>
+                    <span data-ng-bind="widget.urls"></span>
+                    <table class="channel-list" ng-if="widget.channels.length">
+                        <thead>
+                        <tr>
+                            <th translate>VIEW_WIDGETS_CHANNEL_NAME</th>
+                            <th translate>VIEW_BILLING_STANDARD_PRICES_CAN_BE_FREE</th>
+                            <th translate>VIEW_WIDGETS_CHANNEL_PRICE</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="channel in widget.channels | orderBy: 'idx' ">
+                            <td ng-class=" !channel.model.isEnabled?'disabled':'' ">
+                                <span style="font-weight: bold;">{{channel.model.type}}</span>
+                                :&nbsp;<span style="font-style: italic">{{getChannelInfo(channel.model)}}</span>
+                            </td>
+                            <td style="padding-left: 80px">
+                                <i style="color:green" data-ng-show="canBeFree(channel.model.type)" class="glyphicon glyphicon-ok"></i>
+                                <i data-ng-show="!canBeFree(channel.model.type)" class="glyphicon glyphicon-remove"></i>
+                            </td>
+                            <td>
+                                <span ng-style=" !channel.model.price && isAdmin?{'color':'grey'}:'' " data-ng-bind-html="getPrice(channel.model)"></span>
+                                <span ng-if="isAdmin" data-ng-click="editPrice(channel.model)" style="margin-left: 10px;text-decoration: underline;">
+                                    <a>ред.</a>
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </td>
+                <td ng-if="!isAdmin">
+                    <a href class="btn btn-sm btn-light btn-default padder-md m-b"
+                       ui-sref="app.editWidget({widgetId:widget._id})" translate>VIEW_WIDGETS_BUTTON_EDIT
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="margin-left: 10px;margin-top: 10px">
+            <div>
+                <span translate>VIEW_BILLING_STANDARD_PRICES_TEXT1</span>:
+                <b>{{user.notifications_max}}</b>.
+                           <span style="padding-left: 5px">
+                               <a style="text-decoration: underline;color: #1882B1;" translate>VIEW_BILLING_STANDARD_PRICES_TEXT2</a>
+                           </span>
+            </div>
+
+            <div translate>VIEW_BILLING_STANDARD_PRICES_TEXT3</div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="editPrice.html">
+    <div class="modal-header">
+        <h3 class="modal-title">
+            <span>Edit channel price </span>
+            <span style="font-weight: bold">{{channel.type}}</span>:&nbsp;<span style="font-style: italic">{{channelInfo}}</span>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form name="form" class="form-validation form-horizontal" data-ng-submit="save(form)" novalidate>
+            <div class="wrapper-md" style="padding-top: 0px">
+
+                <div ng-class=" 'panel panel-default' ">
+                    <div ng-class=" 'panel-body' ">
+                        <div ng-class=" 'col-md-12' ">
+
+                            <fieldset>
+
+                                <div>
+                                    <span>Standard price:</span>
+                                    <span style="margin-left: 10px;font-weight: bold" data-ng-bind-html="standardPrice"></span>
+                                </div>
+
+                                <div>
+                                    <span>Специальная стоимость:</span>
+                                    <input name="price"
+                                           type="text"
+                                           data-ng-model="channelSettings.price"
+                                           ng-change="setSubmitted(form)"
+                                           id="price"
+                                           style="display: inline; margin-left: 10px;width: 50px;"
+                                           required>
+                                    </span>
+                                    <span>{{currency}}</span>
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float:right;">
+                    <input type="submit"
+                           class="btn btn-success btn-sm"
+                           value="{{'VIEW_BUTTON_SAVE'|translate}}"
+                           translate>
+                    </input>
+                    <div class="btn btn-default btn-light btn-sm" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

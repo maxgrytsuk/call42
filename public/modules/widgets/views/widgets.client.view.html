@@ -1,0 +1,21 @@
+<section class="app-section widgets-list" data-ng-controller="WidgetsController" data-ng-init="findWidgets()">
+
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3" translate>VIEW_WIDGETS_TITLE</h1>
+    </div>
+
+    <div class="wrapper-md" >
+        <div class="empty" data-ng-show="!widgets.length" translate>{{emptyText}}</div>
+
+        <widget-list data-ng-show="widgets.length" user="authentication.user" widgets="widgets"></widget-list>
+        <a data-ng-show="widgets.length" href style="float: right;" class="btn btn-sm btn-success padder-md m-b m"
+           ui-sref="app.createWidget" translate>VIEW_WIDGETS_BUTTON_CREATE
+        </a>
+    </div>
+    <script type="application/javascript">
+        if (typeof ga !== "undefined") {
+            ga('set', 'page', '/widgets');
+            ga('send', 'pageview');
+        }
+    </script>
+</section>

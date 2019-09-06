@@ -1,0 +1,51 @@
+{% extends "layout.email.server.view.html" %}
+
+{% block content %}
+
+<style type="text/css">
+  th, td span {
+    width: 200px;
+  }
+  td {
+    text-align: center;
+  }
+</style>
+
+<table class="table table-striped callback-requests-list">
+
+  <thead>
+  <tr>
+    <th>{{ "EMAIL_CALLBACK_REQUESTS_DATE" | translate }}</th>
+    <th>{{ "EMAIL_CALLBACK_REQUESTS_WIDGET_NAME" | translate }}</th>
+    <th style="width: 400px">{{"EMAIL_CALLBACK_REQUESTS_WIDGET_URL" | translate}}</th>
+    <th>{{ "EMAIL_CALLBACK_REQUESTS_PHONE_NUMBER" | translate}}</th>
+    <th>{{"EMAIL_CALLBACK_REQUESTS_RESULT"| translate}}</th>
+
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for callbackRequest in callbackRequests %}
+  <tr>
+    <td><span>{{callbackRequest.created | dateByTimezone }}</span></td>
+    <td><span>{{callbackRequest.widget.name}}</span></td>
+    <td style="width: 400px"><span>
+      <a style="text-decoration: underline" href="{{callbackRequest.data.referer}}">{{callbackRequest.data.referer}}</a>
+    </span>
+    </td>
+    <td>
+      <span>{{callbackRequest.data.phone}}</span>
+    </td>
+    <td>
+      {% for notification in callbackRequest.notifications %}
+      <span style="color:red">{{notification.channelData.type}} </span>
+      {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+
+  </tbody>
+
+</table>
+
+{% endblock %}

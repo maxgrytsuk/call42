@@ -1,0 +1,63 @@
+<section class="app-section user-edit" data-ng-controller="BillingController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><span translate>VIEW_BILLING_STANDARD_PRICES_TITLE</span></h1>
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+
+            <div class="panel-body b-b b-light">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped prices-list">
+
+                        <thead>
+                        <tr>
+                            <th translate>VIEW_BILLING_STANDARD_PRICES_NOTIFICATION_TYPE</th>
+                            <th translate>VIEW_BILLING_STANDARD_PRICES_CAN_BE_FREE</th>
+                            <th><span translate>VIEW_BILLING_STANDARD_PRICES_PRICE</span>,&nbsp;{{user.currency.name}}</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr data-ng-repeat="item in prices | orderBy: 'idx'"  ng-style=" loading?{'background':'none'}:'' ">
+                            <td><span data-ng-bind="item.name"></span></td>
+                            <td style="padding-left: 100px;">
+                                <i style="color:green" data-ng-show="item.canBeFree" class="glyphicon glyphicon-ok"></i>
+                                <i data-ng-show="!item.canBeFree" class="glyphicon glyphicon-remove"></i>
+                            </td>
+                            <td><span data-ng-bind-html="item.price"></span></td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div>
+                        <div>
+                            <span translate>VIEW_BILLING_STANDARD_PRICES_TEXT1</span>:
+                            <b>{{user.notifications_max}}</b>.
+                           <span style="padding-left: 5px">
+                               <a style="text-decoration: underline;color: #1882B1;" translate>VIEW_BILLING_STANDARD_PRICES_TEXT2</a>
+                           </span>
+                        </div>
+
+                        <div translate>VIEW_BILLING_STANDARD_PRICES_TEXT3</div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <script type="application/javascript">
+        if (typeof ga !== "undefined") {
+            ga('set', 'page', '/prices');
+            ga('send', 'pageview');
+        }
+    </script>
+</section>

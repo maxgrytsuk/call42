@@ -1,0 +1,49 @@
+.filter-form .form-group{
+    float: left;
+    width: 200px;
+    margin-right: 20px;
+}
+.filter-form select{
+    width: 150px;
+}
+.paginator{
+    padding: 5px;
+}
+.paginator a{
+    color: #000000;
+}
+.current a{
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+}
+.callback-requests-list td, .callback-requests-list th {
+    width: 100px;
+}
+.pagination-block ul {
+    padding-left: 20px;
+    float: left;
+}
+.pagination-block div{
+    padding-left: 20px;
+    float: left;
+    padding-top: 25px;
+    color: rgb(51, 122, 183);
+}
+.export-button{
+    float: right;
+    padding-top: 25px;
+    padding-right: 20px;
+}
+.button.collapsed{
+    cursor: pointer;
+    color: #0000ff;
+    font-size: 10px;
+}
+button.refresh{
+    float: left;
+    margin-top: 35px;
+    margin-left: 40px;
+    background-color: white;
+    border: none;
+}

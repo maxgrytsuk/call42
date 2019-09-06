@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Call42</title>
+    <meta name="description" content="Call42, Callback Widget" />
+    <meta name="keywords" content="Call42, callback, widget" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/paymentResult/css/style.css" type="text/css" />
+</head>
+<body>
+
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script type="text/javascript">
+    var order = {{ order | json | safe }};
+</script>
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="/paymentResult/js/script.js"></script>
+</body>
+</html>

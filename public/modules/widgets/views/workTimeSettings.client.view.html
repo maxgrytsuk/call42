@@ -1,0 +1,37 @@
+<table>
+    <tbody>
+    <tr data-ng-repeat="item in settings">
+        <td style="padding-right: 20px">
+            <span translate>{{item.day}}</span>
+        </td>
+        <td>
+            <span ng-show="isRoundTheClock(item)" translate>VIEW_CHANNEL_EDIT_WORK_TIME_ROUND_THE_CLOCK</span>
+            <span ng-show="isNotAvailable(item)" translate>VIEW_CHANNEL_EDIT_WORK_TIME_NOT_WORKING</span>
+            <span ng-show="isWorkingHoursPresent(item)">
+            <span>{{formatTime(item.from)}}</span>-<span>{{formatTime(item.to)}}</span>
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a style="color: rgb(23, 151, 190); text-decoration: underline;"
+   ng-click="editWorkTimeSettings(model, settings)"
+   translate>
+    VIEW_CHANNELS_EDIT
+</a>
+<script type="text/ng-template" id="workTimeSettingsEditDialog.html">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="model.type" translate>VIEW_CHANNEL_EDIT_WORK_TIME_TITLE</h3>
+        <h3 class="modal-title" ng-if="!model.type" translate>VIEW_WIDGET_AUTO_INVITATION_EDIT_WORK_TIME_TITLE</h3>
+        <span ng-if="model.type"><b>{{model.type}}</b>:</span>
+        <span ng-if="model.type"><i>{{getModelInfo(model)}}</i></span>
+    </div>
+    <div class="modal-body">
+        <work-time-edit settings="settings"></work-time-edit>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-click="save(model)" translate>VIEW_BUTTON_SAVE</button>
+        <button class="btn btn-default btn-light" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+    </div>
+</script>

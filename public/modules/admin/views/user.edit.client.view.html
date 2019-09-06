@@ -1,0 +1,244 @@
+<section class="app-section user-edit" data-ng-controller="AdminController" data-ng-init="findUser()">
+    <div class="bg-light lter b-b wrapper-md">
+        <button type="submit" class="btn btn-default" data-ng-click="loginAsUser(userToAdmin._id)" style="float: right">
+            Залогиниться как пользователь
+        </button>
+        <h1 class="m-n font-thin h4">
+            <span>Редактирование данных пользователя</span>:
+            <b data-ng-bind="userToAdmin.username"></b>
+            <div style="font-size: 16px">(зарегистрирован <span data-ng-bind="userToAdmin.date"></span>)</div>
+        </h1>
+
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span>Имя пользователя</span>
+                    </td>
+                    <td>
+                        <span>
+                            <input type="text" data-ng-model="userToAdmin.username"
+                                   data-ng-change="setUserData({username:userToAdmin.username})">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Email</span>
+                    </td>
+                    <td>
+                        <span>
+                            <input type="email" data-ng-model="userToAdmin.email"
+                                     data-ng-change="setUserData({email:userToAdmin.email})">
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Залогинен с помощью</span>
+                    </td>
+                    <td>
+                        <span>{{userToAdmin.provider}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Временная зона</span>
+                    </td>
+                    <td>
+                        <select class="form-control m-b" id="timezone" data-ng-model="userToAdmin.timezone"
+                                data-ng-change="setUserData({timezone:userToAdmin.timezone})">
+                            <option ng-repeat="item in timezones">{{item}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Количество денег на счету</span>
+                    </td>
+                    <td>
+                        <div ng-bind-html="formatMoney(userToAdmin.money, userToAdmin.currency.name)"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Количество бесплатных уведомлений</span>
+                    </td>
+                    <td>
+                        <div><input type="number" data-ng-model="userToAdmin.notifications"
+                                    data-ng-change="setUserData({notifications:userToAdmin.notifications})"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Максимальное количество бесплатных уведомлений</span>
+                    </td>
+                    <td>
+                        <div><input type="number" data-ng-model="userToAdmin.notifications_max"
+                                    data-ng-change="setUserData({notifications_max:userToAdmin.notifications_max})"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Валюта</span>
+                    </td>
+                    <td>
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <div class="controls">
+                                <select
+                                        data-ng-change="setUserData({currency:userCurrency._id})"
+                                        class="form-control"
+                                        ng-model="userCurrency"
+                                        ng-options="currency.name for currency in currencies"
+                                        ng-disabled="isCurrencyChosen(userToAdmin)"
+                                        id="currency">
+                                </select>
+                                <br>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Включить/выключить логирование</span>
+                    </td>
+                    <td>
+                        <div style="float:left;">
+                            <input type="checkbox" data-ng-model="userToAdmin.doLogging"
+                                    data-ng-change="setUserData({doLogging:userToAdmin.doLogging})">
+                        </div>
+                        <div style="margin-left: 40px">
+                            <button type="submit" class="btn btn-sm btn-default" data-ng-click="downloadLog(userToAdmin._id)" style="float: left;margin-right:20px">
+                                Скачать лог
+                            </button>
+                            <button type="submit" class="btn btn-sm btn-default btn-light" data-ng-click="deleteLog(userToAdmin._id)" style="float: left">
+                                Удалить лог
+                            </button>
+                        </div>
+                        <div style="float:left;margin-left: 20px;" data-ng-show="logNotExist" class="text-success">
+                            Лог файл не существует
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Изменение пароля пользователя</span>
+                    </td>
+                    <td>
+                        <div style="margin-left: 40px">
+                            <button type="submit" class="btn btn-sm btn-default btn-light" data-ng-click="changePassword(userToAdmin._id)" style="float: left">
+                                Изменить пароль
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <div style="float: right;margin: 10px">
+                <button data-ng-click="updateUser()" type="submit" class="btn btn-success btn-sm" translate>VIEW_EDIT_PROFILE_SAVE_PROFILE</button>
+                <div data-ng-show="success" class="text-success">
+                    <div translate>VIEW_EDIT_PROFILE_SAVE_SUCCESS</div>
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <div data-ng-bind="error"></div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+        <div ng-if="widgets.length">
+            <h4 >Редактирование стоимости оповещения каналов</h4>
+            <widget-list user="userToAdmin" widgets="widgets" is-admin="true"></widget-list>
+        </div>
+
+        <balance ng-if="userToAdmin" user-id="userToAdmin._id" currency="userToAdmin.currency.name" is-admin="true"></balance>
+
+        <div class="wrapper-md">
+
+            <form class="form-inline ng-pristine ng-valid" role="form">
+                <div class="form-group" style="margin-right: 10px">
+                    <input ng-disabled="!userToAdmin.currency"
+                           style="width: 120px" data-ng-model="accrual.money"
+                           type="number"
+                           class="form-control"
+                           placeholder="">
+                    <span>{{userToAdmin.currency.name}}</span>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only">Информация</label>
+                    <input ng-disabled="!userToAdmin.currency" style="width: 500px" data-ng-model="accrual.info" type="text" class="form-control" placeholder="Инфо">
+                </div>
+
+                <button type="submit" class="btn btn-default" data-ng-click="createAccrual(accrual)">Добавить</button>
+            </form>
+
+        </div>
+
+    </div>
+</section>
+<script type="text/ng-template" id="confirmLogDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Удаление лога пользователя</h3>
+    </div>
+    <div class="modal-body">
+        {{text}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" ng-click="ok()">OK</button>
+        <button class="btn btn-default" ng-click="cancel()">Отмена</button>
+    </div>
+</script>
+<script type="text/ng-template" id="changePassword.html">
+
+        <div class="bg-light lter b-b wrapper-md">
+            <h1 class="m-n font-thin h3"><span translate>VIEW_CHANGE_PASSWORD_TITLE</span><span>(пользователь <strong>{{user.username}})</strong></span></h1>
+        </div>
+
+        <div class="wrapper-md">
+            <div class="panel panel-default">
+
+                <div class="panel-body b-b b-light">
+                    <form name="passwordDetailsForm" class="signin" autocomplete="off">
+                        <fieldset>
+                            <div class="form-group" ng-class="{ 'has-error' : passwordDetailsForm.newPassword.$invalid}">
+                                <label for="newPassword" translate>VIEW_CHANGE_PASSWORD_NEW</label>
+                                <input type="password"
+                                       id="newPassword"
+                                       name="newPassword"
+                                       class="form-control"
+                                       data-ng-model="passwordDetails.newPassword"
+                                       placeholder="{{'VIEW_CHANGE_PASSWORD_NEW_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : passwordDetailsForm.verifyPassword.$invalid}">
+                                <label for="verifyPassword" translate>VIEW_CHANGE_PASSWORD_VERIFY</label>
+                                <input type="password"
+                                       id="verifyPassword"
+                                       name="verifyPassword"
+                                       class="form-control"
+                                       data-ng-model="passwordDetails.verifyPassword"
+                                       placeholder="{{'VIEW_CHANGE_PASSWORD_VERIFY_PLACEHOLDER'|translate}}">
+                            </div>
+
+                            <div data-ng-show="success" class="text-success">
+                                <div translate>VIEW_CHANGE_PASSWORD_CHANGE_SUCCESS</div>
+                            </div>
+                            <div data-ng-show="error" class="text-danger">
+                                <div>{{error | translate}}</div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" ng-click="save(passwordDetailsForm.$valid)" translate>VIEW_BUTTON_SAVE</button>
+            <button class="btn btn-default btn-light" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</button>
+        </div>
+</script>

@@ -1,0 +1,134 @@
+<section class="app-section dashboard" data-ng-controller="DashboardCtrl">
+
+    <div class="bg-light lter b-b wrapper-md ng-scope">
+        <h1 class="m-n font-thin h3"><span translate>VIEW_DASHBOARD_TITLE</span></h1>
+    </div>
+    <div class="wrapper-md">
+
+        <div ng-if="chartsData">
+            <div class="col-md-12 no-padder" data-ng-repeat="chartData in chartsData">
+                <div class="panel">
+
+                    <div class="panel-heading wrapper b-b b-light">
+                        <h4 class="font-thin m-t-none m-b-none text-muted">
+                            <span><b>{{chartData.widgetName}}</b></span>&nbsp;-
+                            <span translate>VIEW_DASHBOARD_CHART_TITLE</span>
+                        </h4>
+                    </div>
+                    <div class="panel-body b-b b-light">
+
+                        <div ui-jq="plot"
+                             ui-refresh="currentLanguage"
+                             ui-options="{{chartData.data}}, {{chartOptions}}"
+                             style="height: 100px; position: relative;">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" data-ng-show="!widgets.length" translate>{{emptyText}}</div>
+
+        <div data-ng-show="widgets.length" class="col-md-8"  style="padding-left: 0px;padding-right: 20px">
+            <div class="panel">
+
+                <div class="panel-heading wrapper b-b b-light">
+                    <h4 class="font-thin m-t-none m-b-none text-muted" translate>VIEW_DASHBOARD_LAST_CALLBACK_REQUESTS_TITLE</h4>
+                </div>
+
+                <div class="panel-body">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped callback-requests-list">
+
+                            <thead>
+                            <tr>
+                                <th translate>VIEW_CALLBACK_REQUESTS_DATE</th>
+                                <th translate>VIEW_CALLBACK_REQUESTS_WIDGET_NAME</th>
+                                <th translate>VIEW_CALLBACK_REQUESTS_WIDGET_URL</th>
+                                <th translate>VIEW_CALLBACK_REQUESTS_PHONE_NUMBER</th>
+                                <th translate>VIEW_CALLBACK_REQUESTS_RESULT</th>
+
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr data-ng-repeat="callbackRequest in lastCallbackRequests">
+                                <td><span data-ng-bind="callbackRequest.date"></span></td>
+                                <td style="word-break: break-all; width: 120px;"><span data-ng-bind="callbackRequest.widget.name"></span></td>
+                                <td><span><a style="text-decoration: underline" href="{{callbackRequest.data.referer}}" target="_blank">{{callbackRequest.data.referer}}</a></span></td>
+                                <td><span data-ng-bind="callbackRequest.data.phone"></span></td>
+                                <td>
+                                    <span data-ng-repeat="notification in callbackRequest.notifications | orderBy: 'idx'">
+                                      <span ng-style="getColorStyle(notification)">{{notification.channelData.type}} </span>
+                                    </span>
+                                    <span style="color:red;" data-ng-show="!callbackRequest.notifications">-</span>
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <a class="btn btn-sm btn-light btn-default link padder-md m-b ng-scope" ui-sref="app.listCallbackRequests({widget:'all',period:'today'})" translate>VIEW_DASHBOARD_BUTTON_CALLBACK_REQUESTS</a>
+                </div>
+            </div>
+        </div>
+
+        <div data-ng-show="widgets.length" class="col-md-4 no-padder">
+            <div class="panel">
+
+                <div class="panel-heading wrapper b-b b-light">
+                    <h4 class="font-thin m-t-none m-b-none text-muted" translate>VIEW_DASHBOARD_WIDGETS_TITLE</h4>
+                </div>
+
+                <div class="panel-body">
+                    <div class="table-responsive widgets">
+                        <table class="table table-striped">
+
+                            <thead>
+                            <tr>
+                                <th rowspan="2" translate style="vertical-align: middle; border-right: solid 1px;border-color: rgb(234, 239, 240);">VIEW_WIDGETS_NAME</th>
+                                <th colspan="2" translate style="text-align: center">VIEW_DASHBOARD_PER_MONTH</th>
+                            </tr>
+                            <tr>
+                                <th translate style="border-right: solid 1px;border-color: rgb(234, 239, 240);">
+                                    VIEW_DASHBOARD_WIDGETS_TABLE_CALLBACK_REQUESTS_TOTAL
+                                </th>
+                                <th style="vertical-align: middle">
+                                    <span translate>VIEW_DASHBOARD_WIDGETS_TABLE_CALLBACK_REQUESTS_PROCESSED</span>,%</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr data-ng-repeat="widget in widgets">
+                                <td style="text-align: left; word-break: break-all;width: 200px;">
+                                    <a ui-sref="app.listCallbackRequests({widget:widget.name, period:'month'})" >
+                                        <span style="text-decoration: underline" data-ng-bind="widget.name"></span>
+                                    </a></td>
+                                <td><span data-ng-bind="widget.callbackRequestsCount"></span></td>
+                                <td><span data-ng-bind="widget.processedCallbackRequsestsPercent"></span>
+                                    <span ng-hide="widget.processedCallbackRequsestsPercent === '-'">%</span></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <a class="btn btn-sm btn-light btn-default link padder-md m-b ng-scope" ui-sref="app.listWidgets" translate>VIEW_DASHBOARD_BUTTON_WIDGETS</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="application/javascript">
+        if (typeof ga !== "undefined") {
+            ga('set', 'page', '/dashboard');
+            ga('send', 'pageview');
+        }
+    </script>
+
+</section>

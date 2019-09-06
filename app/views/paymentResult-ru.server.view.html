@@ -1,0 +1,15 @@
+{% extends "layout.paymentResult.server.view.html" %}
+
+{% block content %}
+
+<div class="bg-white-only content">
+    <div style="padding-bottom: 10px">
+        Платеж осуществлен, дождитесь подтверждения либо проверьте <a href="/app#!/settings/profile">балланс счета</a> позже
+    </div>
+    <div>Текущее состояние платежа:
+        <b id="status"></b>
+        <img id="check_status_indicator" style="height: 20px;" src="/paymentResult/img/wait.gif">
+    </div>
+</div>
+
+{% endblock %}

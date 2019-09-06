@@ -1,0 +1,9 @@
+{% extends "layout.email.server.view.html" %}
+
+{% block content %}
+<div>{{text}}</div>
+<div> {{ "EMAIL_CALLBACK_REQUESTS_ERROR2" | translate }} </div>
+</br>
+<div> {{ "EMAIL_CALLBACK_REQUESTS_ERROR3" | translate }} </div>
+<div> {{ error }} </div>
+{% endblock %}

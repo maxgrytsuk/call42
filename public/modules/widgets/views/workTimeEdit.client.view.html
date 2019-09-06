@@ -1,0 +1,26 @@
+<table class="table b-t b-light work-time">
+    <tbody>
+    <thead>
+    <tr>
+        <th translate>VIEW_CHANNEL_EDIT_WORK_TIME_AVAILABLE</th>
+        <th translate style="padding-left: 30px">VIEW_CHANNEL_EDIT_WORK_TIME_DAY</th>
+        <th translate style="padding-left: 45px">VIEW_CHANNEL_EDIT_WORK_TIME_STARTS</th>
+        <th translate style="padding-left: 45px">VIEW_CHANNEL_EDIT_WORK_TIME_ENDS</th>
+    </tr>
+    </thead>
+    <tr data-ng-repeat="item in settings | orderBy: 'idx' ">
+        <td style="vertical-align: middle">
+            <input name="item-available" type="checkbox" data-ng-model="item.available" class="inline" style="margin-left:20px">
+        </td>
+        <td style="vertical-align: middle" ng-class="{ disabled : !item.available }">
+            <span translate>{{item.day}}</span>
+        </td>
+        <td ng-class="{ disabled : !item.available }" style="vertical-align: middle">
+            <span style="display: inline-table" work-time-picker ng-model="item.from" ng-attr-available="item.available"></span>
+        </td>
+        <td ng-class="{ disabled : !item.available }">
+            <span work-time-picker ng-model="item.to" ng-attr-available="item.available"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,192 @@
+<section class="app-section">
+
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><span translate>VIEW_CALLBACK_REQUESTS_TITLE</span></h1>
+    </div>
+
+    <div class="wrapper-md" ng-class="{'loading':loading}">
+        <div class="panel panel-default" ng-style=" loading?{'background':'none'}:'' ">
+
+            <div class="panel-body b-b b-light">
+                <form name="filter" class="form-horizontal m-l filter-form" style="float:left;" id='filter' novalidate>
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label class="control-label" for="widget" translate>VIEW_CALLBACK_REQUESTS_WIDGETS</label>
+                            <div class="controls">
+                                <select ng-change="find()"
+                                        class="form-control"
+                                        ng-model="currentWidget"
+                                        ng-options="widget.name | translate for widget in widgets"
+                                        id="widget">
+                                </select><br>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="period" translate>VIEW_CALLBACK_REQUESTS_PERIOD</label>
+                            <div class="controls">
+                                <select ng-change="find()"
+                                        class="form-control"
+                                        ng-model="currentPeriod"
+                                        ng-options="period.name | translate for period in periods"
+                                        id="period">
+                                </select>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="status" translate>VIEW_CALLBACK_REQUESTS_STATUSES</label>
+                            <div class="controls">
+                                <select ng-change="find()"
+                                        class="form-control"
+                                        ng-model="currentStatus"
+                                        ng-options="status.name | translate for status in statuses"
+                                        id="status">
+                                </select>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="phone" translate>VIEW_CALLBACK_REQUESTS_PHONE_NUMBER</label>
+                            <div class="controls">
+                                <input ng-change="find()"
+                                       class="form-control"
+                                       name="phone"
+                                       type="text"
+                                       data-ng-model="phone"
+                                       id="phone"
+                                       placeholder="{{'VIEW_CALLBACK_REQUESTS_PHONE_NUMBER_PLACEHOLDER'|translate}}">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+                <button class="refresh" data-ng-click="find()">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped callback-requests-list">
+
+                    <thead>
+                    <tr>
+                        <th translate>VIEW_CALLBACK_REQUESTS_DATE</th>
+                        <th translate>VIEW_CALLBACK_REQUESTS_WIDGET_NAME</th>
+                        <th translate>VIEW_CALLBACK_REQUESTS_WIDGET_URL</th>
+                        <th translate>VIEW_CALLBACK_REQUESTS_PHONE_NUMBER</th>
+                        <th translate>VIEW_CALLBACK_REQUESTS_RESULT</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr data-ng-repeat="callbackRequest in callbackRequests" ng-style=" loading?{'background':'none'}:'' ">
+                        <td><span data-ng-bind="callbackRequest.date"></span></td>
+                        <td style="word-break: break-all;width: 120px"><span data-ng-bind="callbackRequest.widget.name"></span></td>
+                        <td><span><a style="text-decoration: underline" href="{{callbackRequest.data.referer}}" target="_blank">{{callbackRequest.data.referer}}</a></span></td>
+                        <td><span data-ng-bind="callbackRequest.data.phone"></span></td>
+                        <td style="width:300px">
+                            <div data-ng-show="callbackRequest.notifications.length">
+                                <div ng-show="isExpanded(callbackRequest)"
+                                     ng-click="toggleCollapsed(callbackRequest)"
+                                     class="button collapsed" style="float: right;">
+                                    <span translate>VIEW_CALLBACK_REQUESTS_COLLAPSE</span>
+                                </div>
+                                <div style="clear: both;"></div>
+                                <div
+                                        data-ng-repeat="notification in callbackRequest.notifications | orderBy: 'idx'"
+                                        ng-show="isExpanded(callbackRequest)"
+                                        >
+
+                                    <div style="float: left;width: 100px" ng-style="getColorStyle(notification)">
+
+                                        <div>{{notification.channelData.type}}</div>
+
+                                        <div style="font-size: 10px">{{getChannelInfo(notification.channelData)}}</div>
+
+                                    </div>
+
+                                    <div style="float: left;width: 120px">
+
+                                        <div style="float: right; padding-right: 20px" ng-bind-html="getNotificationCost(notification)"></div>
+
+                                    </div>
+
+                                    <div style="float: left; padding-left: 10px; width: 120px;" ng-show="notification.info.code">
+                                        <span translate>{{notification.info.code}}</span>
+                                        <span ng-show="notification.info.message">
+                                            (<span translate>{{notification.info.message}}</span>)
+                                        </span>
+                                    </div>
+
+                                    <div style="clear:both; padding-bottom: 10px"></div>
+                                </div>
+
+                        <span data-ng-repeat="notification in callbackRequest.notifications | orderBy: 'idx'" ng-show="!isExpanded(callbackRequest)">
+                          <span ng-style="getColorStyle(notification)">{{notification.channelData.type}} </span>
+                        </span>
+                                <span ng-show="!isExpanded(callbackRequest)"> ...</span>
+                        <span class="button collapsed"
+                              ng-show="!isExpanded(callbackRequest)"
+                              ng-click="toggleCollapsed(callbackRequest)" >
+
+                            <span translate>VIEW_CALLBACK_REQUESTS_EXPAND</span>
+                        </span>
+                            </div>
+                            <div data-ng-show="!callbackRequest.notifications && callbackRequest.widget.channels.length">
+                                <span style="color:red" translate>VIEW_CALLBACK_REQUESTS_RESULT_NO_NOTIFICATIONS</span>
+                            </div>
+                            <div data-ng-show="!callbackRequest.notifications && !callbackRequest.widget.channels.length">
+                                <span style="color:red" translate>VIEW_CALLBACK_REQUESTS_RESULT_NO_CHANNELS</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+                <div class="pagination-block">
+                    <uib-pagination
+                            total-items="pagesData.count"
+                            items-per-page="pagesData.perPage"
+                            ng-model="pagesData.current"
+                            max-size="5"
+                            style="float:left"
+                            class="pagination-sm"
+                            boundary-links="true"
+                            rotate="false"
+                            ng-change="find(pagesData.current)"
+                            next-text="{{'NEXT' | translate}}"
+                            previous-text="{{'PREV' | translate}}"
+                            first-text="{{'FIRST' | translate}}"
+                            last-text="{{'LAST' | translate}}"
+                            >
+                    </uib-pagination>
+                    <div>{{getPaginatorInfo()}}</div>
+                </div>
+
+
+                <div ng-show="pagesData.count > 0" class="export-button">
+                    <button type="button"
+                            class="btn m-b-xs btn-default btn-light btn-sm"
+                            ng-click="export()"
+                            translate>VIEW_CALLBACK_REQUESTS_EXPORT</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script type="application/javascript">
+        if (typeof ga !== "undefined") {
+            ga('set', 'page', '/callbackRequests');
+            ga('send', 'pageview');
+        }
+    </script>
+</section>

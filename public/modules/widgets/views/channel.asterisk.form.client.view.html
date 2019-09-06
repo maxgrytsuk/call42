@@ -1,0 +1,383 @@
+<form name="form" class="form-validation form-horizontal" data-ng-submit="save(form)" novalidate>
+    <div class="wrapper-md" style="padding-top: 0px">
+        <div style="padding-bottom: 20px" ng-if="mode === 'edit'">
+                    <span class="controls" >
+                        <label class="i-switch bg-info m-t-xs m-r">
+                            <input name="enabled"
+                                   type="checkbox"
+                                   data-ng-model="channel.isEnabled"
+                                   id="enabled">
+                            <i></i>
+                        </label>
+                    </span>
+            <span style="vertical-align: super;" translate>VIEW_CHANNELS_TURN_OFF</span>
+        </div>
+        <div ng-class=" mode === 'edit' ? 'panel panel-default' : '' ">
+            <div ng-class=" mode === 'edit' ? 'panel-body' : '' ">
+                <div ng-class=" mode === 'edit' ? 'col-md-12' : '' ">
+
+                    <fieldset>
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.host.$invalid}">
+                            <label class="control-label" for="host" translate>VIEW_CHANNEL_EDIT_ASTERISK_SERVER_URL</label>
+                            <div class="controls">
+                                <input name="host"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.host"
+                                       id="host"
+                                       class="form-control"
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_SERVER_URL_PLACEHOLDER'|translate}}" required>
+                            </div>
+                            <div ng-show="form.$submitted && form.host.$invalid" class="help-block">
+                                <p ng-show="form.host.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.port.$invalid}">
+                            <label class="control-label" for="port" translate>VIEW_CHANNEL_EDIT_ASTERISK_SERVER_PORT</label>
+                            <div class="controls">
+                                <input name="port"
+                                       type="number"
+                                       ng-minlength="1"
+                                       ng-maxlength="99999"
+                                       data-ng-model="channel.nativeParams.port"
+                                       id="port"
+                                       class="form-control"
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_SERVER_PORT_PLACEHOLDER'|translate}}" required>
+                            </div>
+                            <div ng-show="form.$submitted && form.port.$invalid" class="help-block">
+                                <p ng-show="form.port.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                                <p ng-show="form.port.$error.number || form.port.$error.minlength || form.port.$error.maxlength" class="text-danger" translate>
+                                    VIEW_CHANNEL_EDIT_ASTERISK_SERVER_PORT_VALIDATION_NUMBER
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.user.$invalid}">
+                            <label class="control-label" for="user" translate>VIEW_CHANNEL_EDIT_ASTERISK_USER_NAME </label>
+                            <div class="controls">
+                                <input name="user"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.user"
+                                       id="user"
+                                       class="form-control"
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_USER_NAME_PLACEHOLDER'|translate}}" required>
+                            </div>
+                            <div ng-show="form.$submitted && form.user.$invalid" class="help-block">
+                                <p ng-show="form.user.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.secret.$invalid}">
+                            <label class="control-label" translate>VIEW_CHANNEL_EDIT_ASTERISK_USER_PASSWORD </label>
+                            <div class="controls">
+                                <input ng-if="mode === 'create'" name="secret" type="password" data-ng-model="channel.nativeParams.secret"
+                                       class="form-control"
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_USER_PASSWORD_PLACEHOLDER'|translate}}" required>
+                                <input ng-if="mode === 'edit'"  name="secret" type="password" data-ng-model="channel.nativeParams.secret"
+                                       ng-focus="clearAsteriskPassword()"
+                                       ng-blur="fillAsteriskPassword()"
+                                       class="form-control"
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_USER_PASSWORD_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div ng-show="form.$submitted && form.secret.$invalid" class="help-block">
+                                <p ng-show="form.secret.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-class="{ 'has-error' : form.$submitted && form.callMethod.$invalid}">
+                            <div translate>VIEW_CHANNEL_EDIT_ASTERISK_CALL_METHOD_TITLE </div>
+                            <div class="radio">
+                                <label class="i-checks">
+                                    <input name="callMethod" type="radio"
+                                           data-ng-model="channel.nativeParams.callMethod"
+                                           value="1">
+                                    <i></i>
+
+                                </label>
+                                <span translate>VIEW_CHANNEL_EDIT_ASTERISK_CALL_METHOD1_NAME</span>
+                                <div class="call-method-description" translate>VIEW_CHANNEL_EDIT_ASTERISK_CALL_METHOD1_DESCRIPTION</div>
+                            </div>
+                            <div class="radio">
+                                <label class="i-checks">
+                                    <input name="callMethod" type="radio"
+                                           data-ng-model="channel.nativeParams.callMethod"
+                                           value="2">
+                                    <i></i>
+                                </label>
+                                <span translate>VIEW_CHANNEL_EDIT_ASTERISK_CALL_METHOD2_NAME</span>
+                                <div class="call-method-description" translate>VIEW_CHANNEL_EDIT_ASTERISK_CALL_METHOD2_DESCRIPTION</div>
+                            </div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '1' " class="form-group" ng-class="{ 'has-error' : form.$submitted && form.peer.$invalid}">
+                            <label class="control-label" for="peer" translate>
+                                VIEW_CHANNEL_EDIT_ASTERISK_PEER
+                            </label>
+                            <div class="controls">
+                                <input name="peer"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.method1Params.peer"
+                                       id="peer"
+                                       class="form-control"
+                                       required
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_PEER_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div ng-show="form.$submitted && form.peer.$error.required" class="help-block">
+                                <p ng-show="form.peer.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                            </div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '1' " class="form-group" ng-class="{ 'has-error' : form.$submitted && form.context.$invalid}">
+                            <label class="control-label" for="context" translate>
+                                VIEW_CHANNEL_EDIT_ASTERISK_CONTEXT
+                            </label>
+                            <div class="controls">
+                                <input name="context"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.method1Params.context"
+                                       id="context"
+                                       class="form-control"
+                                       required
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_CONTEXT_PLACEHOLDER'|translate}}">
+                            </div>
+                            <div ng-show="form.$submitted && form.context.$error.required" class="help-block">
+                                <p ng-show="form.context.$error.required" class="text-danger" translate>
+                                    VIEW_VALIDATION_REQUIRED
+                                </p>
+                            </div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '2' " class="form-group" ng-class="{ 'has-error' : form.$submitted && form.checkActivePeers.$invalid}">
+                            <label class="control-label" for="context" translate>
+                                VIEW_CHANNEL_EDIT_ASTERISK_PEERS
+                            </label>
+                            <div class="controls">
+                                <input name="context"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.method2Params.checkActivePeers"
+                                       id="checkActivePeers"
+                                       class="form-control"
+                                       required
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_PEERS_PLACEHOLDER'|translate}}">
+                            </div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '2' " class="form-group" ng-class="{ 'has-error' : form.$submitted && form.destination.$invalid}">
+                            <label class="control-label" for="destination" translate>VIEW_CHANNEL_EDIT_ASTERISK_DIALPLAN</label>
+                            <div class="controls">
+                                <input name="destination"
+                                       type="text"
+                                       data-ng-model="channel.nativeParams.method2Params.destination"
+                                       id="destination"
+                                       class="form-control"
+                                       required
+                                       placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_DIALPLAN_PLACEHOLDER'|translate}}" required>
+                            </div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '2' " class="form-group" >
+                            <label class="control-label" translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES</label>
+                            <table class="table asterisk-routes" ng-style="{height: ((channel.nativeParams.method2Params.routes.length * 55 + 40) + 'px')}">
+
+                                <thead style="background-color: #EAEFF0; height: 30px;">
+                                <tr>
+                                    <th style="padding-left: 25px;width:170px;">
+                                        <span translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PREFIX</span>
+                                        <span class="hint"
+                                              style="z-index: 100"
+                                              popover="{{asteriskPrefixDescription}}"
+                                              popover-trigger="mouseenter">(?)
+                                        </span>
+                                    </th>
+                                    <th style="width:170px;">
+                                        <span translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PATTERN</span>
+                                        <span class="hint"
+                                              popover="{{asteriskPatternDescription}}"
+                                              popover-trigger="mouseenter">(?)
+                                        </span>
+                                    </th>
+                                    <th style="width:170px;" translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_CHANNEL </th>
+                                    <th translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_DESCRIPTION </th>
+                                    <th> </th>
+                                    <th translate>VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_ACTIONS </th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <input name="routes" type="hidden" id="routes" data-ng-model="channel.nativeParams.method2Params.routes">
+                                        <p class="text-danger" ng-show="form.$submitted && !channel.nativeParams.method2Params.routes.length" translate>
+                                            VIEW_VALIDATION_REQUIRED
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr class="asterisk-route" data-ng-repeat="route in channel.nativeParams.method2Params.routes track by $index" ng-style="{top: ((32 + route.idx * 55) + 'px')}">
+                                    <td style="width:170px;">
+                                        <input style="display: inline;width:95%"
+                                               name="route.prefix" type="text" data-ng-model="route.prefix"
+                                               id="route.prefix"    class="form-control"
+                                                >
+                                    </td>
+                                    <td style="width:170px;">
+                                        <input style="display: inline;width:95%"
+                                               name="route.pattern" type="text" data-ng-model="route.pattern"
+                                               id="route.pattern"    class="form-control"
+                                                >
+                                    </td>
+                                    <td style="width:170px;">
+                                        <input name="route.channel" type="text" data-ng-model="route.channel" id="route.channel"
+                                               class="form-control"
+                                               required>
+                                    </td>
+                                    <td>
+                                        <input name="route.description" type="text" data-ng-model="route.description" id="route.description"
+                                               class="form-control"
+                                                >
+                                    </td>
+                                    <td>
+                                        <div style="float: right">
+                                            <div style="cursor: pointer"
+                                                 ng-click="moveRoute(route, -1)"
+                                                 ng-style="isFirst(route) || isLast(route)?{'margin-top':'6px'}:{}"
+                                                 ng-show="!isFirst(route)">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </div>
+                                            <div style="cursor: pointer"
+                                                 ng-click="moveRoute(route, 1)"
+                                                 ng-style="isFirst(route) || isLast(route)?{'margin-top':'6px'}:{}"
+                                                 ng-show="!isLast(route)">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-default btn-light btn-xs"
+                                                ng-click="deleteRoute(route)"
+                                                ng-style="$last||$first?{'margin-top':'4%'}:{'margin-top':'6%'}"
+                                                translate>VIEW_CHANNEL_EDIT_ASTERISK_DELETE_ROUTE</div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="btn btn-success btn-xs" ng-click="addRoute(channel)" translate>VIEW_CHANNEL_EDIT_ASTERISK_ADD_ROUTE</div>
+                        </div>
+
+                        <div ng-if="channel.nativeParams.callMethod == '2' " class="form-group" ng-class="{ 'has-error' : form.$submitted && form.excludedPrefixes.$invalid}">
+                            <label class="control-label" for="destination" translate>VIEW_CHANNEL_EDIT_ASTERISK_EXCLUDED_PREFIXES</label>
+                            <div class="controls">
+                                    <textarea name="excludedPrefixes"
+                                              rows="5"
+                                              data-ng-model="channel.nativeParams.method2Params.excludedPrefixes"
+                                              id="excludedPrefixes"
+                                              class="form-control"
+                                              placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_EXCLUDED_PREFIXES_PLACEHOLDER'|translate}}">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div style="float: left" ng-if="mode === 'edit'">
+            <div class="btn btn-default btn-light btn-sm" ng-click="delete(channel)" translate>VIEW_CHANNELS_DELETE</div>
+        </div>
+        <div style="float:right;">
+            <input type="submit"
+                   class="btn btn-success btn-sm"
+                   value="{{'VIEW_BUTTON_SAVE'|translate}}"
+                   translate>
+            </input>
+            <div class="btn btn-default btn-light btn-sm" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</div>
+        </div>
+    </div>
+</form>
+
+<script type="text/ng-template" id="addRoute.html">
+    <div class="modal-header">
+        <h3 class="modal-title"><span translate>VIEW_CHANNEL_EDIT_ASTERISK_ADD_ROUTE</span></h3>
+    </div>
+    <div class="modal-body">
+        <form name="addRouteForm" class="form-validation" novalidate>
+            <fieldset>
+
+                <div class="form-group" ng-class="{ 'has-error' : addRouteForm.$submitted && addRouteForm.prefix.$invalid}">
+                    <label class="control-label" for="prefix" translate>
+                        VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PREFIX
+                    </label>
+                    <div class="controls">
+                        <input name="prefix" type="text" data-ng-model="route.prefix" id="prefix"
+                               class="form-control"
+                               placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PREFIX_PLACEHOLDER'|translate}}"
+                                />
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : addRouteForm.$submitted && addRouteForm.pattern.$invalid}">
+                    <label class="control-label" for="pattern" translate>
+                        VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PATTERN
+                    </label>
+                    <div class="controls">
+                        <input name="pattern" type="text" data-ng-model="route.pattern" id="pattern"
+                               class="form-control"
+                               placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_PATTERN_PLACEHOLDER'|translate}}"
+                               unique-asterisk-route ng-attr-channel="channel"/>
+                    </div>
+                    <div ng-show="addRouteForm.$submitted && addRouteForm.pattern.$invalid" class="help-block">
+                        <p ng-show="addRouteForm.$submitted && addRouteForm.pattern.$error.uniqueAsteriskRoute"
+                           class="text-danger" translate>
+                            VIEW_CHANNEL_EDIT_ASTERISK_ROUTE_VALIDATION_UNIQUE</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : addRouteForm.$submitted && addRouteForm.channel.$invalid}">
+                    <label class="control-label" for="channel" translate>
+                        VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_CHANNEL
+                    </label>
+                    <div class="controls">
+                        <input name="channel" type="text" data-ng-model="route.channel" id="channel"
+                               class="form-control"
+                               placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_CHANNEL_PLACEHOLDER'|translate}}" required>
+                    </div>
+                    <div ng-show="addRouteForm.$submitted && addRouteForm.channel.$invalid" class="help-block">
+                        <p ng-show="addRouteForm.$submitted && addRouteForm.channel.$error.required" class="text-danger" translate>VIEW_VALIDATION_REQUIRED</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : addRouteForm.$submitted && addRouteForm.description.$invalid}">
+                    <label class="control-label" for="description" translate>
+                        VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_DESCRIPTION
+                    </label>
+                    <div class="controls">
+                        <input name="description" type="text" data-ng-model="route.description" id="description"
+                               class="form-control"
+                               placeholder="{{'VIEW_CHANNEL_EDIT_ASTERISK_ROUTES_DESCRIPTION_PLACEHOLDER'|translate}}">
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="btn btn-success" ng-click="add(route, addRouteForm)" translate>VIEW_BUTTON_SAVE</div>
+        <div class="btn btn-default btn-light" ng-click="cancel()" translate>VIEW_BUTTON_CANCEL</div>
+    </div>
+</script>

@@ -1,0 +1,24 @@
+<!-- list -->
+<ul class="nav">
+    <li ng-class="getIsActiveMenuItem('app.dashboard')">
+        <a ui-sref="app.dashboard" class="auto">
+            <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
+            <span class="font-bold" translate>VIEW_DASHBOARD_TITLE</span>
+        </a>
+
+    </li>
+    <li ng-class="getIsActiveMenuItem('app.listWidgets')">
+        <a ui-sref="app.listWidgets">
+            <i class="glyphicon glyphicon-modal-window icon text-info-dker"></i>
+            <span class="font-bold" translate>VIEW_MENU_MAIN_WIDGETS_LIST</span>
+        </a>
+    </li>
+    <li ng-class="getIsActiveMenuItem('app.listCallbackRequests')">
+        <a ui-sref="app.listCallbackRequests({period:'today'})">
+            <i class="glyphicon glyphicon-earphone icon text-info-dker"></i>
+            <span class="font-bold" translate>VIEW_MENU_MAIN_CALLBACK_REQUESTS</span>
+        </a>
+    </li>
+
+</ul>
+<!-- / list -->

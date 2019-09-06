@@ -1,0 +1,53 @@
+<section data-ng-controller="AuthenticationController">
+    <a href="/" class="navbar-brand block">Call42</a>
+    <div class="col-md-12 text-center" translate>VIEW_SIGN_UP_SOCIAL_TITLE </div>
+    <div class="col-md-12 text-center social">
+        <a href="/auth/facebook" class="undecorated-link">
+            <img src="/modules/users/img/buttons/facebook.png">
+        </a>
+        <a href="/auth/twitter" class="undecorated-link">
+            <img src="/modules/users/img/buttons/twitter.png">
+        </a>
+        <a href="/auth/google" class="undecorated-link">
+            <img src="/modules/users/img/buttons/google.png">
+        </a>
+    </div>
+    <div style="clear: both; padding-bottom: 10px"></div>
+    <div class="container w-xxl w-auto-xs">
+
+        <div class="m-b-lg">
+            <form name="userForm" data-ng-submit="signup()" class="form-validation" novalidate>
+                <div class="list-group list-group-sm">
+                    <div class="list-group-item">
+                        <input placeholder="{{'VIEW_USERNAME_PLACEHOLDER'|translate}}"
+                               class="form-control no-border"
+                               data-ng-model="credentials.username"
+                               required>
+                    </div>
+                    <div class="list-group-item">
+                        <input type="email"
+                               placeholder="Email"
+                               class="form-control no-border"
+                               data-ng-model="credentials.email"
+                               required>
+                    </div>
+                    <div class="list-group-item">
+                        <input type="password"
+                               placeholder="{{'VIEW_PASSWORD_PLACEHOLDER'|translate}}"
+                               class="form-control no-border"
+                               data-ng-model="credentials.password"
+                               required>
+                    </div>
+                </div>
+                <div class="m-b-md" ng-show="error">
+                    <alert type="danger" close="closeAlert()">{{error}}</alert>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block" translate>VIEW_SIGN_UP</button>
+                <div class="line line-dashed"></div>
+                <p class="text-center"><small translate>VIEW_SIGN_UP_HAVE_AN_ACCOUNT</small></p>
+                <a ui-sref="access.signin" class="btn btn-lg btn-default btn-block" translate>VIEW_SIGN_IN</a>
+            </form>
+        </div>
+    </div>
+
+</section>

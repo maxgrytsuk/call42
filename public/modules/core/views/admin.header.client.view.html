@@ -1,0 +1,33 @@
+<div data-ng-controller="HeaderController">
+
+
+    <div class="bg-white-only">
+
+        <!-- nabar right -->
+        <ul class="nav navbar-nav navbar-right">
+
+            <li class="dropdown" dropdown>
+                <a href class="dropdown-toggle clear" dropdown-toggle>
+                    <span data-ng-bind="authentication.user.username"></span> <b class="caret"></b>
+                </a>
+                <!-- dropdown -->
+                <ul class="dropdown-menu animated fadeInRight w">
+                    <li>
+                        <a ui-sref="app.profile">Редактировать профиль</a>
+                    </li>
+                    <li data-ng-show="authentication.user.provider === 'local'">
+                        <a ui-sref="app.password">Изменить пароль</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a ng-click="signout()">Выйти</a>
+                    </li>
+                </ul>
+                <!-- / dropdown -->
+            </li>
+        </ul>
+        <!-- / navbar right -->
+
+    </div>
+
+</div>

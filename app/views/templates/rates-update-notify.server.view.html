@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        th, td span {
+            width: 200px;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="content">
+    {% if errorText %}
+    <div>{{ errorText }}</div>
+    {% endif %}
+
+    {% if rates %}
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th colspan="2">Валюты</th>
+            <th>Курс</th>
+            <th>Обратный курс</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in rates %}
+        <tr>
+            <td><span>{{item.currencyFrom}}</span></td>
+            <td><span>{{item.currencyTo}}</span></td>
+            <td><span>{{item.rate}}</span></td>
+            <td><span>{{(1 / item.rate).toFixed(4)}}</span></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    {% endif %}
+
+</div>
+</body>
+</html>

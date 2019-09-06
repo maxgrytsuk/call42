@@ -1,0 +1,178 @@
+<h4 translate>VIEW_BILLING_BALANCE_LIST</h4>
+
+<form name="filter" class="form-horizontal m-l" style="float:left;" id='filter' novalidate>
+    <fieldset>
+
+        <div class="form-group" style="width: 280px; float: left;margin-right: 30px;">
+            <label translate>VIEW_BILLING_BALANCE_FROM</label>
+            <p class="input-group">
+                <input type="text"
+                       class="form-control"
+                       uib-datepicker-popup="dd-MM-yyyy"
+                       datepicker-options="dateOptions"
+                       ng-model="from"
+                       is-open="fromOpened"
+                       ng-change="getData()"
+                       clear-text="{{'CLEAR' | translate}}"
+                       close-text="{{'CLOSE' | translate}}"
+                       current-text="{{'TODAY' | translate}}"
+                        />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event, 'from')"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+
+        <div class="form-group" style="width: 280px; float: left;">
+            <label translate>VIEW_BILLING_BALANCE_TO</label>
+            <p class="input-group">
+                <input type="text"
+                       class="form-control"
+                       uib-datepicker-popup="dd-MM-yyyy"
+                       datepicker-options="dateOptions"
+                       ng-model="to"
+                       is-open="toOpened"
+                       ng-change="getData()"
+                       clear-text="{{'CLEAR' | translate}}"
+                       close-text="{{'CLOSE' | translate}}"
+                       current-text="{{'TODAY' | translate}}"
+                        />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event, 'to')"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+
+    </fieldset>
+</form>
+
+<div style="clear: both;"></div>
+
+<div style="margin-bottom: 10px">
+    <span translate>VIEW_BILLING_BALANCE_TOTAL_AMOUNT</span>:&nbsp;<strong><span ng-bind-html="totalAmount"></span></strong>
+</div>
+
+<div ng-if="isAdmin" style="margin-bottom: 10px">
+    <span translate>VIEW_BILLING_BALANCE_TOTAL_COST</span>:&nbsp<strong><span ng-bind-html="totalCost"></span></strong>
+</div>
+
+<div class="panel panel-default balance" ng-class="{'loading':loading}" data-ng-controller="BillingController">
+    <div class="table-responsive">
+        <table class="table table-striped">
+
+            <thead>
+            <tr>
+                <th rowspan="2" translate>VIEW_BILLING_BALANCE_DATE</th>
+                <th colspan="2"><span translate>VIEW_BILLING_BALANCE_MONEY</span>,<span style="padding-left: 5px">{{currency}}</span></th>
+                <th colspan="2" translate>VIEW_BILLING_BALANCE_NOTIFICATIONS</th>
+                <th rowspan="2" translate>VIEW_BILLING_BALANCE_TYPE</th>
+                <th rowspan="2" ng-if="isAdmin"><span translate>VIEW_BILLING_BALANCE_COST</span>,<span style="padding-left: 5px">{{currency}}</span></th>
+                <th rowspan="2" translate>VIEW_BILLING_BALANCE_INFO</th>
+            </tr>
+            <tr>
+                <th translate>VIEW_BILLING_BALANCE_FLOW</th>
+                <th translate>VIEW_BILLING_BALANCE_STATE_CURRENT</th>
+                <th translate>VIEW_BILLING_BALANCE_FLOW</th>
+                <th translate>VIEW_BILLING_BALANCE_STATE_CURRENT</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr data-ng-repeat="item in balance" ng-style=" loading?{'background':'none'}:'' ">
+                <td style="width: 350px">
+                    <span data-ng-bind="item.date"></span>
+                </td>
+                <td align="right" style="width: 100px;">
+                    <span ng-bind-html="item.money?formatMoney(item.money):'-'"></span>
+                </td>
+                <td align="right" style="width: 100px;">
+                    <span ng-bind-html="item.moneyCurrent?formatMoney(item.moneyCurrent):'-'"></span>
+                </td>
+                <td align="right" style="width: 100px">
+                    <span>{{item.free?item.free:'-'}}</span>
+                </td>
+                <td align="right" style="width: 100px">
+                    <span>{{item.freeCurrent}}</span>
+                </td>
+                <td style="width: 450px; text-align: left">
+                    <span data-ng-bind="item.type | translate"></span>
+                </td>
+                <td style="width: 150px; text-align: left" ng-if="isAdmin">
+                    <span style="padding-left: 40px;" ng-bind-html="item.cost?formatMoney(item.cost):'-'"></span>
+                </td>
+                <td style="width: 650px; text-align: left">
+                    <span ng-show="item.notification">
+                        <span>{{item.notification && item.notification.callbackRequest.data.phone}}</span>
+                        <span>{{item.notification && item.notification.callbackRequest.widget.name}}/{{item.notification && item.notification.channelData.type}}
+                            <span>{{item.notification && item.notification.channelData?getChannelInfo(item.notification.channelData):''}}</span>
+                        </span>
+                    </span>
+                    <span ng-show="item.info">
+                        {{item.info}}
+                    </span>
+                    <table ng-show="item.payment" class="payment-info">
+                        <tr >
+                            <td colspan="2" style="font-weight: bold;">
+                                <div ng-if="item.payment.status === 'success'" translate>VIEW_BILLING_BALANCE_INFO_STATUS_SUCCESS</div>
+                                <div style="color:red;" ng-if="item.payment.status === 'failure'" translate>VIEW_BILLING_BALANCE_INFO_STATUS_FAILURE</div>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="item.payment.status === 'failure'">
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_ERR</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_ERR_DESCRIPTION}}
+                                <span>(err_code:<span style="padding-left: 3px">{{item.payment.info.PAYMENT_FIELD_ERR_CODE}})</span></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_SERVICE</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_SERVICE}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_AMOUNT</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_AMOUNT}}
+                                <span>{{currency}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_CARD_MASK</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_CARD_MASK}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_SENDER_PHONE</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_SENDER_PHONE}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_DESCRIPTION</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_DESCRIPTION}}</td>
+                        </tr>
+                        <tr>
+                            <td style="width:40%" class="name"><span translate>PAYMENT_FIELD_ORDER_ID</span>:</td>
+                            <td style="padding-left: 15px;">{{item.payment.info.PAYMENT_FIELD_ORDER_ID}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div class="pagination-block" >
+            <uib-pagination
+                    total-items="pagesData.count"
+                    items-per-page="pagesData.perPage"
+                    ng-model="pagesData.current"
+                    max-size="5"
+                    class="pagination-sm"
+                    boundary-links="true"
+                    rotate="false"
+                    ng-change="getBalance({page:pagesData.current})"
+                    next-text="{{'NEXT' | translate}}"
+                    previous-text="{{'PREV' | translate}}"
+                    first-text="{{'FIRST' | translate}}"
+                    last-text="{{'LAST' | translate}}"
+                    >
+            </uib-pagination>
+            <div>{{getPaginatorInfo()}}</div>
+        </div>
+    </div>
+</div>

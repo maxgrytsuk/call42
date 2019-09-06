@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div id="content">
+
+    <strong>{{text}}</strong>
+    <br>
+
+    <div style="margin: 20px">
+        <div>Payment data:</div>
+        <table>
+            <tr>
+                <td>user:</td>
+                <td style="padding-left: 15px;">{{payment.user.username}}</td>
+            </tr>
+            <tr>
+                <td>service:</td>
+                <td style="padding-left: 15px;">{{payment.service}}</td>
+            </tr>
+            {% for item in payment.info %}
+            <tr>
+                <td>{{loop.key}}:</td>
+                <td style="padding-left: 15px;">{{item}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<br>
+<div>
+    -----------------------<br>
+    <span>{{widgetServerHost}}</span><br>
+</div>
+</body>
+</html>
