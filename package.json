@@ -52,7 +52,7 @@
     "moment": "^2.13.0",
     "moment-timezone": "^0.3.1",
     "mongojs": "^0.18.0",
-    "mongoose": "3.8",
+    "mongoose": "5.7",
     "mongoose-deep-populate": "^1.1.0",
     "mongoose-query-paginate": "^1.0.1",
     "mongoose-reverse-populate": "^1.1.0",
